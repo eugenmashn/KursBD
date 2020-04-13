@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Data.Models.City>
+@{
+    ViewData["Title"] = "City&&Country";
+}
+
+
+
+<table class="table table-dark">
+    <thead>
+    <th scope="col">Назва </th>
+    <th scope="col">Країна </th>
+    <th scope="col">Чи існує порт </th>
+    </thead>
+    <tbody>
+
+        @foreach (var city in Model)
+        {
+
+            <tr>
+                <th scope="row">@city.Name </th>
+                <th scope="row">@city.Country.Name </th>
+                <th scope="row">@city.IsPort </th>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<input type="button" value="Добавити країну" onclick="@("window.location.href='" + @Url.Action("AddCountry", "Home") + "'");" />
+<input type="button" value="Добавити місто" onclick="@("window.location.href='" + @Url.Action("AddCity", "Home") + "'");" />

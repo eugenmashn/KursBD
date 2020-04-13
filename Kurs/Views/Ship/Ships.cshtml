@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewData["Title"] = "Ships";
+}
+
+
+
+<table class="table table-dark">
+    <thead>
+    <th scope="col">Назва корабля </th>
+    <th scope="col">Тип корабля </th>
+    <th scope="col">Довжина корабля</th>
+    <th scope="col">Ширина корабля</th>
+    <th scope="col">Ім'я приписки корабля</th>
+    <th scope="col">Колір</th>
+    </thead>
+    <tbody>
+
+        @foreach (var ship in ViewBag.Ships)
+        {
+
+            <tr>
+                <th scope="row">@ship.Name </th>
+                <th scope="row">@ship.TypeShip </th>
+                <th scope="row">@ship.Lenght </th>
+                <th scope="row">@ship.Witch </th>
+                <th scope="row">@ship.Port.Name </th>
+                <th scope="row">@ship.color </th>
+            </tr>
+
+        }
+    </tbody>
+</table>
+
+<input type="button" value="Добавити корабль" onclick="@("window.location.href='" + @Url.Action("AddShip", "Ship") + "'");" />
+

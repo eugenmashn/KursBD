@@ -1,0 +1,53 @@
+﻿@model Kurs.Models.ShipView
+@{
+    ViewData["Title"] = "AddShip";
+}
+
+@{
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    foreach (var Port in ViewBag.Ports)
+    {
+        listItems.Add(new SelectListItem
+        {
+            Text = Port.Name,
+            Value = Port.PortId.ToString()
+        });
+    }
+}
+
+@using (Html.BeginForm("AddShip", "Ship", FormMethod.Post))
+{
+    <div class="col">
+        <label>Назва</label>
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        @*//<input type="text" name="TeamName" placeholder="Team NAme" class="form-control" />*@
+    </div>
+    <div class="col">
+        <label>Довжина</label>
+        @Html.TextBoxFor(m => m.Lenght, new { @class = "form-control", @type = "number" })
+        @*<input type="number" class="form-control" name="MinNumberWorkers">*@
+    </div>
+
+    <div class="col ">
+        <label> Ширина </label>
+        @Html.TextBoxFor(m => m.Witch, new { @class = "form-control", @type = "number" })
+    </div>
+    <div class="col ">
+        <label> Тип корабля</label>
+        @Html.TextBoxFor(m => m.TypeShip, new { @class = "form-control"})
+    </div>
+    <div class="col ">
+        <label> Колір </label>
+        @Html.TextBoxFor(m => m.color, new { @class = "form-control" })
+    </div>
+    <div class="col ">
+        <label>Порт приписки</label>
+        @Html.DropDownListFor(m => m.portPrip, listItems, "-- Select Status --", new
+        {
+            @class = "form-control"
+        })
+    </div>
+    <div style="margin:20px 0px ">
+        <button type="submit" class=" btn btn-primary btn-block">Добавити</button>
+    </div>
+}

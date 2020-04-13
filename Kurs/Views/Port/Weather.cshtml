@@ -1,0 +1,86 @@
+﻿@model Kurs.Models.SortWeather
+@{
+    ViewData["Title"] = "Weather";
+}
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+        <link src="~/lib/jqueryui/jquery-ui.min.css" rel="stylesheet" />
+        <script src="~/lib/jqueryui/jquery-ui.min.js"></script>
+        <script type="text/javascript">
+            $(function () {
+                $(".date-picker").datepicker({
+                    dateFormat: 'dd-M-yy'
+                });
+
+            });
+
+        </script>
+    </head>
+
+@{
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    foreach (var Port in ViewBag.Port)
+    {
+        listItems.Add(new SelectListItem
+        {
+            Text = Port.Name,
+            Value = Port.PortId.ToString()
+        }
+        );
+    }
+}
+@using (Html.BeginForm("Weather", "Port", FormMethod.Post))
+{
+    <div class="col">
+        <label>Порт</label>
+        @Html.DropDownListFor(m => m.PortId, listItems, "-- Select Status --", new
+        {
+            @class = "form-control"
+        })
+    </div>
+
+    <div class="col ">
+        <label>Дата</label>
+        @Html.EditorFor(m => m.Date,
+        new { htmlAttributes = new { @class = "form-control " } })
+    </div>
+
+
+    <div style="margin:20px 0px ">
+        <button type="submit" class=" btn btn-primary btn-block">Filter</button>
+    </div>
+}
+<table class="table table-dark">
+    <thead>
+    <th scope="col">Назва порту </th>
+    <th scope="col">Температура </th>
+    <th scope="col">Висота хвилі</th>
+    <th scope="col">Швидкість вітру</th>
+    <th scope="col">Дата</th>
+
+    </thead>
+    <tbody>
+
+        @foreach (var weather in ViewBag.Weather)
+        {
+
+        <tr>
+            <th scope="row">@weather.Port.Name </th>
+            <th scope="row">@weather.Temperature </th>
+            <th scope="row">@weather.HeightWave </th>
+            <th scope="row">@weather.WindSpeed </th>
+            <th scope="row">@weather.Date </th>
+
+        </tr>
+
+        }
+    </tbody>
+</table>
+
+<input type="button" value="Добавити порт" onclick="@("window.location.href='" + @Url.Action("AddWeather", "Port") + "'");" />
+
+

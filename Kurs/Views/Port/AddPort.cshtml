@@ -1,0 +1,55 @@
+﻿@model Data.Models.Port
+@{
+    ViewData["Title"] = "AddPort";
+}
+@{
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    foreach (var City in ViewBag.Cities)
+    {
+        listItems.Add(new SelectListItem
+        {
+            Text = City.Name,
+            Value = City.CityId.ToString()
+        }
+        );
+    }
+}
+
+@using (Html.BeginForm("AddPort", "Port", FormMethod.Post))
+{
+    <div class="col">
+        <label>Назва</label>
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        @*//<input type="text" name="TeamName" placeholder="Team NAme" class="form-control" />*@
+    </div>
+    <div class="col">
+        <label>Площа</label>
+        @Html.TextBoxFor(m => m.Area, new { @class = "form-control", @type = "number" })
+        @*<input type="number" class="form-control" name="MinNumberWorkers">*@
+    </div>
+
+    <div class="col ">
+        <label> Кількість причалів</label>
+        @Html.TextBoxFor(m => m.CountPrichal, new { @class = "form-control", @type = "number" })
+    </div>
+    <div class="col ">
+        <label> Глибина</label>
+        @Html.TextBoxFor(m => m.Depth, new { @class = "form-control", @type = "number" })
+    </div>
+    <div class="col ">
+        <label> Тип порту</label>
+        @Html.TextBoxFor(m => m.TypePort, new { @class = "form-control" })
+    </div>
+    <div class="col ">
+        <label>Місто</label>
+        @Html.DropDownListFor(m => m.CityId, listItems, "-- Select Status --", new
+        {
+            @class = "form-control"
+        })
+    </div>
+    <div style="margin:20px 0px ">
+        <button type="submit" class=" btn btn-primary btn-block">Добавити</button>
+    </div>
+}
+
+

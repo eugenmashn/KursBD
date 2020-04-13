@@ -1,0 +1,33 @@
+﻿@model Data.Models.Country
+@{
+    ViewData["Title"] = "AddCountry";
+}
+
+
+@using (Html.BeginForm("AddCountry", "Home", FormMethod.Post))
+{
+<div>
+    <div class="row">
+        <div class="col-sm-6">
+            <label>Назва   </label>
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+            @*//<input type="text" name="TeamName" placeholder="Team NAme" class="form-control" />*@
+        </div>
+        <div class="col-sm-6">
+            <label> Столиця</label>
+            @Html.TextBoxFor(m => m.Capital, new { @class = "form-control" })
+            @*<input type="number" class="form-control" name="MinNumberWorkers">*@
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <label>Кількість портів   </label>
+            @Html.TextBoxFor(m => m.CountPort, new { @class = "form-control", @type = "number" })
+
+        </div>
+        <div class="col-sm-3">
+            <button type="submit" style="margin-top:30px;" class=" btn btn-primary  btn-block">Add</button>
+        </div>
+    </div>
+</div>
+}

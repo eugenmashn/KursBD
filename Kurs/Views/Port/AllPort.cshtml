@@ -1,0 +1,55 @@
+﻿
+@model Kurs.Models.SortPort;
+@{
+    ViewData["Title"] = "AllPort";
+}
+
+
+
+@using (Html.BeginForm("AllPort", "Port", FormMethod.Post))
+{
+ 
+    <div class="col">
+        <label>Кількість причалів</label>
+        @Html.TextBoxFor(m => m.CountPrichal, new { @class = "form-control", @type = "number" })
+        @*<input type="number" class="form-control" name="MinNumberWorkers">*@
+    </div>
+
+  
+    <div class="col ">
+        <label> Глибина</label>
+        @Html.TextBoxFor(m => m.Depth, new { @class = "form-control", @type = "number" })
+    </div>
+    
+
+    <div style="margin:20px 0px ">
+        <button type="submit" class=" btn btn-primary btn-block">Filter</button>
+    </div>
+}
+<table class="table table-dark">
+    <thead>
+    <th scope="col">Назва </th>
+    <th scope="col">Тип порту </th>
+    <th scope="col">Площа</th>
+    <th scope="col">Кількість причалів</th>
+    <th scope="col">Глибина</th>
+    </thead>
+    <tbody>
+
+        @foreach (var port in ViewBag.AllPort)
+        {
+
+            <tr>
+                <th scope="row">@port.Name </th>
+                <th scope="row">@port.TypePort </th>
+                <th scope="row">@port.Area </th>
+                <th scope="row">@port.CountPrichal </th>
+                <th scope="row">@port.Depth </th>
+
+            </tr>
+
+        }
+    </tbody>
+</table>
+
+<input type="button" value="Добавити порт" onclick="@("window.location.href='" + @Url.Action("AddPort", "Port") + "'");" />

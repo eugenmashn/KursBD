@@ -1,0 +1,43 @@
+﻿@model Data.Models.City
+
+@{
+    ViewData["Title"] = "AddCity";
+}
+@{
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    foreach (var Country in ViewBag.Countries)
+    {
+        listItems.Add(new SelectListItem
+        {
+            Text = Country.Name,
+            Value = Country.CountryId.ToString()
+        }
+        );
+    }
+}
+
+@using (Html.BeginForm("AddCity", "Home", FormMethod.Post))
+{
+    <div class="col">
+        <label>Назва</label>
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        @*//<input type="text" name="TeamName" placeholder="Team NAme" class="form-control" />*@
+    </div>
+    <div class="col">
+        <label>Чи існує порт?</label>
+        @Html.CheckBoxFor(m =>m.IsPort)
+        @*<input type="number" class="form-control" name="MinNumberWorkers">*@
+    </div>
+  
+    <div class="col ">
+        <label>Країна</label>
+        @Html.DropDownListFor(m => m.CountryId, listItems, "-- Select Status --", new
+        {
+            @class = "form-control"
+        })
+    </div>
+    <div style="margin:20px 0px ">
+        <button type="submit" class=" btn btn-primary btn-block">Add</button>
+    </div>
+}
+

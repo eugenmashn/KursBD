@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewData["Title"] = "AddWeather";
+}
+
+@model Data.Models.Weather
+
+@{
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    foreach (var Port in ViewBag.Port)
+    {
+        listItems.Add(new SelectListItem
+        {
+            Text = Port.Name,
+            Value = Port.PortId.ToString()
+        }
+        );
+    }
+}
+@using (Html.BeginForm("AddWeather", "Port", FormMethod.Post))
+{
+    <div class="col">
+        <label>Порт</label>
+        @Html.DropDownListFor(m => m.PortId, listItems, "-- Select Status --", new
+        {
+            @class = "form-control"
+        })
+    </div>
+
+    <div class="col ">
+        <label>Дата</label>
+        @Html.EditorFor(m => m.Date,
+        new { htmlAttributes = new { @class = "form-control " } })
+    </div>
+    <div class="col ">
+        <label>Висота хвилі</label>
+        @Html.TextBoxFor(m => m.HeightWave, new { @class = "form-control", @type = "number" })
+    </div>
+    <div class="col ">
+        <label>Температура</label>
+        @Html.TextBoxFor(m => m.Temperature, new { @class = "form-control", @type = "number" })
+    </div>
+    <div class="col ">
+        <label>Швидкість вітра</label>
+        @Html.TextBoxFor(m => m.WindSpeed, new { @class = "form-control", @type = "number" })
+    </div>
+    <div style="margin:20px 0px ">
+        <button type="submit" class=" btn btn-primary btn-block">Добавити</button>
+    </div>
+}
