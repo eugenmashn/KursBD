@@ -20,8 +20,8 @@ namespace Data.Models
         public int Experience { get; set; }
         public int Salary { get; set; }
         public string Position { get; set; }
-        public Guid? ShipId { get; set; }
-        public Ship? Ship { get; set; }
+        public Guid ShipId { get; set; }
+        public Ship Ship { get; set; }
 
     }
 }

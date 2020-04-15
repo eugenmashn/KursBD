@@ -1,9 +1,28 @@
-﻿
+﻿@model Kurs.Models.ShipSort
 @{
     ViewData["Title"] = "Ships";
 }
 
+@using (Html.BeginForm("Ships", "Ship", FormMethod.Post))
+{
 
+    <div class="col">
+        <label>Менше довжини</label>
+        @Html.TextBoxFor(m => m.Witch, new { @class = "form-control", @type = "number" })
+        @*<input type="number" class="form-control" name="MinNumberWorkers">*@
+    </div>
+
+
+    <div class="col ">
+        <label> Менше ширини</label>
+        @Html.TextBoxFor(m => m.Lenght, new { @class = "form-control", @type = "number" })
+    </div>
+
+
+    <div style="margin:20px 0px ">
+        <button type="submit" class=" btn btn-primary btn-block">Filter</button>
+    </div>
+}
 
 <table class="table table-dark">
     <thead>

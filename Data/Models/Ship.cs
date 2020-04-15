@@ -16,8 +16,6 @@ namespace Data.Models
         public int Witch { get; set; }
         public Guid PortId { get; set; }
         public Port Port { get; set; }
-        public ICollection<StaffPerson> StaffPeople { get; set; }
-        public ICollection<Visits> Visitss { get; set; }
         public string color { get; set; }
     }
 }

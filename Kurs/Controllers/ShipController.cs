@@ -16,21 +16,64 @@ namespace Kurs.Controllers
         public IEFRepository<Country> EFRepositoryCountries;
         public IEFRepository<Port> EFRepositoryPort;
         public IEFRepository<Weather> EFRepositoryWeather;
-        public ShipController(IEFRepository<Ship> eFRepositoryShip, IEFRepository<City> eFRepositoryCity, IEFRepository<Country> eFRepositoryCountries, IEFRepository<Port> eFRepositoryPort, IEFRepository<Weather> eFRepositoryWeather)
+        public IEFRepository<Visits> EFRepositoryVisits;
+        public ShipController(IEFRepository<Ship> eFRepositoryShip, IEFRepository<City> eFRepositoryCity, IEFRepository<Country> eFRepositoryCountries, IEFRepository<Port> eFRepositoryPort, IEFRepository<Weather> eFRepositoryWeather, IEFRepository<Visits> eFRepositoryVisits)
         {
             EFRepositoryShip = eFRepositoryShip;
             EFRepositoryCity = eFRepositoryCity;
             EFRepositoryCountries = eFRepositoryCountries;
             EFRepositoryPort = eFRepositoryPort;
             EFRepositoryWeather = eFRepositoryWeather;
-          
+            EFRepositoryVisits = eFRepositoryVisits;
+
+
         }
         
         [HttpGet]
-        public IActionResult Ships()
+        [HttpPost]
+        public IActionResult Ships(ShipSort shipSort)
         {
+            if( shipSort.Lenght != 0)
+            {
+                if(shipSort.Witch != 0) 
+                {
+                    ViewBag.Ships = EFRepositoryShip.IncludeGet(i => i.Port).Where(i => i.Lenght < shipSort.Lenght).ToList();
+                    return View();
+                }
+            
+                ViewBag.Ships = EFRepositoryShip.IncludeGet(i => i.Port).Where(i=>i.Lenght<shipSort.Lenght && i.Witch <shipSort.Witch).ToList();
+                return View();
+            }
+            if (shipSort.Witch != 0)
+            {
+                ViewBag.Ships = EFRepositoryShip.IncludeGet(i => i.Port).Where(i => i.Lenght < shipSort.Witch).ToList();
+                return View();
+            }
             ViewBag.Ships = EFRepositoryShip.IncludeGet(i => i.Port).ToList();
             return View();
+        }
+
+        [HttpGet]
+        [HttpPost]
+        public IActionResult Visits()
+        {
+
+            ViewBag.Visits = EFRepositoryVisits.IncludeGet(i => i.Ship).ToList();
+            ViewBag.Ship = EFRepositoryShip.Get().ToList();
+            return View();
+        }
+        [HttpGet]
+        public IActionResult AddVisit()
+        {
+            ViewBag.Ship = EFRepositoryShip.Get().ToList();
+            return View();
+        }
+        [HttpPost]
+        public IActionResult AddVisit(Visits visits)
+        {
+            ViewBag.Ship = EFRepositoryShip.Get().ToList();
+            EFRepositoryVisits.Create(visits);
+            return Redirect("/Ship/Visits");
         }
 
         [HttpGet]
@@ -53,7 +96,7 @@ namespace Kurs.Controllers
             newShip.Witch = ship.Witch;
             newShip.TypeShip = ship.TypeShip;
             EFRepositoryShip.Create(newShip);
-            return Redirect("Ship/Ships");
+            return Redirect("/Ship/Ships");
         }
         
     }

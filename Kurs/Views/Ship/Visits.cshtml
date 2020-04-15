@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewData["Title"] = "Visits";
+}
+
+
+
+<table class="table table-dark">
+    <thead>
+    <th scope="col">Назва корабля </th>
+    <th scope="col">Дата прибуття </th>
+    <th scope="col">Дата від'їзду</th>
+    <th scope="col">Номер причалу</th>
+    <th scope="col">Ціль</th>
+    </thead>
+    <tbody>
+
+        @foreach (var visit in ViewBag.Visits)
+        {
+
+            <tr>
+                <th scope="row">@visit.Ship.Name } </th>
+                <th scope="row">@visit.DateArrival </th>
+                <th scope="row">@visit.DateDeparture </th>
+                <th scope="row">@visit.NumberPrich </th>
+                <th scope="row">@visit.Purpose </th>
+            </tr>
+
+        }
+    </tbody>
+</table>
+<input type="button" value="Добавити відвідування" onclick="@("window.location.href='" + @Url.Action("AddVisit", "Ship") + "'");" />
