@@ -1,0 +1,82 @@
+﻿@model Data.Models.StaffPerson
+@{
+    ViewData["Title"] = "AddStaff";
+}
+
+
+@{
+    ViewData["Title"] = "AddShip";
+}
+
+@{
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    foreach (var Ship in ViewBag.Ship)
+    {
+        listItems.Add(new SelectListItem
+        {
+            Text = Ship.Name,
+            Value = Ship.ShipId.ToString()
+        });
+    }
+}
+
+@{
+    List<SelectListItem> listItemsC = new List<SelectListItem>();
+    foreach (var City in ViewBag.City)
+    {
+        listItemsC.Add(new SelectListItem
+        {
+            Text = City.Name,
+            Value = City.CityId.ToString()
+        });
+    }
+}
+@using (Html.BeginForm("AddStaff", "Staff", FormMethod.Post))
+{
+    <div class="col">
+        <label> Ім'я </label>
+        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+        @*//<input type="text" name="TeamName" placeholder="Team NAme" class="form-control" />*@
+    </div>
+    <div class="col">
+        <label> Прізвища </label>
+        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+        @*//<input type="text" name="TeamName" placeholder="Team NAme" class="form-control" />*@
+    </div>
+    <div class="col">
+        <label> День народження</label>
+        @Html.EditorFor(m => m.BirstDay, new { htmlAttributes = new { @class = "form-control ", @type = "date" } })
+        @*<input type="number" class="form-control" name="MinNumberWorkers">*@
+    </div>
+
+    <div class="col ">
+        <label> Стаж праці </label>
+        @Html.TextBoxFor(m => m.Experience, new { @class = "form-control", @type = "number" })
+    </div>
+    <div class="col ">
+        <label> Телефон </label>
+        @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+    </div>
+    <div class="col ">
+        <label> Заробітня платня </label>
+        @Html.TextBoxFor(m => m.Salary, new { @class = "form-control", @type = "number" })
+    </div>
+    <div class="col ">
+        <label> Корабельде працює робітник </label>
+        @Html.DropDownListFor(m => m.ShipId, listItems, "-- Select Status --", new
+        {
+            @class = "form-control"
+        })
+    </div>
+    <div class="col ">
+        <label> Корабельде працює робітник </label>
+        @Html.DropDownListFor(m => m.CityId, listItemsC, "-- Select Status --", new
+        {
+            @class = "form-control"
+        })
+    </div>
+    <div style="margin:20px 0px ">
+        <button type="submit" class=" btn btn-primary btn-block">Добавити</button>
+    </div>
+}
+

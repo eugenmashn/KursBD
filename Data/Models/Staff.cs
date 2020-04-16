@@ -12,6 +12,7 @@ namespace Data.Models
         public Guid PersonId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime BirstDay { get; set; }
         public string stat { get; set; }
         public Guid CityId { get; set; }

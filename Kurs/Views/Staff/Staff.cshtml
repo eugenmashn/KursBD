@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewData["Title"] = "Staff";
+}
+
+
+<table class="table table-dark">
+    <thead>
+    <th scope="col"> Прізвища </th>
+    <th scope="col"> Ім'я </th>
+    <th scope="col">День народження</th>
+    <th scope="col">Стать</th>
+    <th scope="col"> Місто проживання</th>
+    <th scope="col"> Номер телефону</th>
+    <th scope="col"> Стаж праці </th>
+    <th scope="col"> Посада </th>
+    <th scope="col"> Назва корабля </th>
+    </thead>
+    <tbody>
+
+        @foreach (var staff in ViewBag.Staff)
+        {
+
+            <tr>
+                <th scope="row">@staff.FirstName </th>
+                <th scope="row">@staff.LastName </th>
+                <th scope="row">@staff.BirstDay </th>
+                <th scope="row">@staff.stat </th>
+                <th scope="row">@staff.City.Name </th>
+                <th scope="row">@staff.Phone </th>
+                <th scope="row">@staff.Experience </th>
+                <th scope="row">@staff.Salary </th>
+                <th scope="row">@staff.Position </th>
+                <th scope="row">@staff.Ship.Name </th>
+            </tr>
+
+        }
+    </tbody>
+</table>
+
+<input type="button" value="Добавити корабль" onclick="@("window.location.href='" + @Url.Action("AddStaff", "Staff") + "'");" />

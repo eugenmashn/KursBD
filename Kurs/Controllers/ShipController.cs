@@ -57,8 +57,10 @@ namespace Kurs.Controllers
         [HttpPost]
         public IActionResult Visits()
         {
+            var visits = EFRepositoryVisits.IncludeGet(i => i.Port).ToList();
 
-            ViewBag.Visits = EFRepositoryVisits.IncludeGet(i => i.Ship).ToList();
+            var Visits = EFRepositoryVisits.IncludeGet(i => i.Ship ).ToList();
+            ViewBag.Visits = Visits;
             ViewBag.Ship = EFRepositoryShip.Get().ToList();
             return View();
         }
@@ -66,12 +68,14 @@ namespace Kurs.Controllers
         public IActionResult AddVisit()
         {
             ViewBag.Ship = EFRepositoryShip.Get().ToList();
+            ViewBag.Port = EFRepositoryPort.Get().ToList();
             return View();
         }
         [HttpPost]
         public IActionResult AddVisit(Visits visits)
         {
             ViewBag.Ship = EFRepositoryShip.Get().ToList();
+           
             EFRepositoryVisits.Create(visits);
             return Redirect("/Ship/Visits");
         }

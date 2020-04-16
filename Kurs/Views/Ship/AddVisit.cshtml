@@ -14,28 +14,46 @@
         });
     }
 }
+@{
+    List<SelectListItem> listItemsP = new List<SelectListItem>();
+    foreach (var Port in ViewBag.Port)
+    {
+        listItemsP.Add(new SelectListItem
+        {
+            Text = Port.Name,
+            Value = Port.PortId.ToString()
+        });
+    }
+}
 
 @using (Html.BeginForm("AddVisit", "Ship", FormMethod.Post))
 
-{<div class="col ">
+{
+    <div class="col ">
+        <label> Назва порта </label>
+        @Html.DropDownListFor(m => m.PortId, listItemsP, "-- Select Status --", new
+        {
+            @class = "form-control"
+        })
+    </div>
+    <div class="col ">
         <label> Назва корабля </label>
         @Html.DropDownListFor(m => m.ShipId, listItems, "-- Select Status --", new
         {
             @class = "form-control"
         })
     </div>
- <div class="col">
-     <label> Дата прибуття </label>
-     
-         @Html.EditorFor(m => m.DateArrival,
-         new { htmlAttributes = new { @class = "form-control " } })
-  
-     @*//<input type="text" name="TeamName" placeholder="Team NAme" class="form-control" />*@
- </div>
+    <div class="col">
+        <label> Дата прибуття </label>
+
+        @Html.EditorFor(m => m.DateArrival, new { htmlAttributes = new { @class = "form-control ", @type = "date" } })
+
+        @*//<input type="text" name="TeamName" placeholder="Team NAme" class="form-control" />*@
+    </div>
 
     <div class="col">
         <label> Дата відбуття </label>
-        @Html.EditorFor(m => m.DateDeparture, new { @class = "form-control")
+        @Html.EditorFor(m => m.DateDeparture, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
         @*<input type="number" class="form-control" name="MinNumberWorkers">*@
     </div>
 
@@ -47,8 +65,8 @@
         <label> Ціль приїзду </label>
         @Html.TextBoxFor(m => m.Purpose, new { @class = "form-control" })
     </div>
-   
-     
+
+
     <div style="margin:20px 0px ">
         <button type="submit" class=" btn btn-primary btn-block">Добавити</button>
     </div>

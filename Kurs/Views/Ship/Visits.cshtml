@@ -12,6 +12,7 @@
     <th scope="col">Дата від'їзду</th>
     <th scope="col">Номер причалу</th>
     <th scope="col">Ціль</th>
+    <th scope="col">Назва порту</th>
     </thead>
     <tbody>
 
@@ -19,11 +20,12 @@
         {
 
             <tr>
-                <th scope="row">@visit.Ship.Name } </th>
-                <th scope="row">@visit.DateArrival </th>
-                <th scope="row">@visit.DateDeparture </th>
-                <th scope="row">@visit.NumberPrich </th>
-                <th scope="row">@visit.Purpose </th>
+                <th scope="col">@visit.Port.Name  </th>
+                <th scope="col">@visit.DateArrival</th>
+                <th scope="col">@visit.DateDeparture </th>
+                <th scope="col">@visit.NumberPrich </th>
+                <th scope="col">@visit.Purpose </th>
+                <th scope="col">@visit.Ship.Name </th>
             </tr>
 
         }

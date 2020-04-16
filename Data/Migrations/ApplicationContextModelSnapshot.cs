@@ -183,6 +183,9 @@ namespace Data.Migrations
                     b.Property<int>("NumberPrich")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("PortId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Purpose")
                         .HasColumnType("nvarchar(max)");
 
@@ -190,6 +193,8 @@ namespace Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("VisitsId");
+
+                    b.HasIndex("PortId");
 
                     b.HasIndex("ShipId");
 
@@ -268,6 +273,12 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Models.Visits", b =>
                 {
+                    b.HasOne("Data.Models.Port", "Port")
+                        .WithMany()
+                        .HasForeignKey("PortId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Data.Models.Ship", "Ship")
                         .WithMany()
                         .HasForeignKey("ShipId")

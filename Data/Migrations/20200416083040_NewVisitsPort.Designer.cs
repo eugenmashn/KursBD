@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20200415182138_NewD")]
-    partial class NewD
+    [Migration("20200416083040_NewVisitsPort")]
+    partial class NewVisitsPort
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -185,6 +185,9 @@ namespace Data.Migrations
                     b.Property<int>("NumberPrich")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("PortId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Purpose")
                         .HasColumnType("nvarchar(max)");
 
@@ -192,6 +195,8 @@ namespace Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("VisitsId");
+
+                    b.HasIndex("PortId");
 
                     b.HasIndex("ShipId");
 
@@ -270,6 +275,12 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Models.Visits", b =>
                 {
+                    b.HasOne("Data.Models.Port", "Port")
+                        .WithMany()
+                        .HasForeignKey("PortId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Data.Models.Ship", "Ship")
                         .WithMany()
                         .HasForeignKey("ShipId")
