@@ -29,6 +29,8 @@ namespace Kurs.Controllers
         [HttpPost]
         public IActionResult AllPort( SortPort sortPort )
         {
+            ViewBag.Cities = EFRepositoryCity.Get();
+
             if (sortPort.Depth == 0 && sortPort .CountPrichal == 0)
             {
                 ViewBag.AllPort = EFRepositoryPort.IncludeGet(i => i.Weathers);

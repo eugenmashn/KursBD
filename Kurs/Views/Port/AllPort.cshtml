@@ -1,26 +1,77 @@
 ﻿
-@model Kurs.Models.SortPort;
-@{
+@using Kurs.Models
+@model  Data.Models.Port
+@{ 
     ViewData["Title"] = "AllPort";
 }
 
+@{
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    foreach (var City in ViewBag.Cities)
+    {
+        listItems.Add(new SelectListItem
+        {
+            Text = City.Name,
+            Value = City.CityId.ToString()
+        }
+        );
+    }
+}
+<style>
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
 
+    /* Modal Content */
+    .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 60%;
+    }
 
+    /* The Close Button */
+    .close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+</style>
 @using (Html.BeginForm("AllPort", "Port", FormMethod.Post))
 {
- 
+
     <div class="col">
         <label>Кількість причалів</label>
-        @Html.TextBoxFor(m => m.CountPrichal, new { @class = "form-control", @type = "number" })
+        <input class="form-control"type="number" name="CountPrichal" />
+     
         @*<input type="number" class="form-control" name="MinNumberWorkers">*@
     </div>
 
-  
+
     <div class="col ">
         <label> Глибина</label>
-        @Html.TextBoxFor(m => m.Depth, new { @class = "form-control", @type = "number" })
+        <input class="form-control" type="number" name="Depth" />
     </div>
-    
+
 
     <div style="margin:20px 0px ">
         <button type="submit" class=" btn btn-primary btn-block">Filter</button>
@@ -52,4 +103,80 @@
     </tbody>
 </table>
 
-<input type="button" value="Добавити порт" onclick="@("window.location.href='" + @Url.Action("AddPort", "Port") + "'");" />
+<input type="button" value="Добавити порт" id="myBtn" />
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        @using (Html.BeginForm("AddPort", "Port", FormMethod.Post))
+        {
+        <div class="container">
+            <div class="row offset-11">
+                <span id="closeid" class="close">&times;</span>
+            </div>
+            <div class="row">
+                <label>Назва</label>
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                @*//<input type="text" name="TeamName" placeholder="Team NAme" class="form-control" />*@
+            </div>
+            <div class="row">
+                <label>Площа</label>
+                @Html.TextBoxFor(m => m.Area, new { @class = "form-control", @type = "number" })
+                @*<input type="number" class="form-control" name="MinNumberWorkers">*@
+            </div>
+
+            <div class="row ">
+                <label> Кількість причалів</label>
+                @Html.TextBoxFor(m => m.CountPrichal, new { @class = "form-control", @type = "number" })
+            </div>
+            <div class="row ">
+                <label> Глибина</label>
+                @Html.TextBoxFor(m => m.Depth, new { @class = "form-control", @type = "number" })
+            </div>
+            <div class="row ">
+                <label> Тип порту</label>
+                @Html.TextBoxFor(m => m.TypePort, new { @class = "form-control" })
+            </div>
+            <div class="row ">
+                <label>Місто</label>
+                @Html.DropDownListFor(m => m.CityId, listItems, "-- Select Status --", new
+                {
+                    @class = "form-control"
+                })
+            </div>
+
+            <div style="margin:20px 0px ">
+                <button type="submit" class=" btn btn-primary btn-block">Добавити</button>
+            </div>
+        </div>
+        }
+    </div>
+
+</div>
+<script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementById("closeid");
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
