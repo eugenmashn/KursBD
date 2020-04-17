@@ -3,8 +3,8 @@
 
     
 
-        <<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-        =<!-- Compiled and minified CSS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <!-- Compiled and minified CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
 
         <!-- Compiled and minified JavaScript -->
@@ -109,14 +109,16 @@
         @foreach (var weather in ViewBag.Weather)
         {
 
-            <tr>
-                <th scope="row">@weather.Port.Name </th>
-                <th scope="row">@weather.Temperature </th>
-                <th scope="row">@weather.HeightWave </th>
-                <th scope="row">@weather.WindSpeed </th>
-                <th scope="row">@weather.Date </th>
+        <tr>
+            <th scope="row">@weather.Port.Name </th>
+            <th scope="row">@weather.Temperature </th>
+            <th scope="row">@weather.HeightWave </th>
+            <th scope="row">@weather.WindSpeed </th>
+            <th scope="row">@weather.Date </th>
+            <th scope="row"><a><input type="button" onclick="Open(this)" id="@weather.WeatherId" value="Змінити" /> </a></th>
 
-            </tr>
+
+        </tr>
 
         }
     </tbody>
@@ -130,7 +132,7 @@
         {
     <div class="container">
     <div class="row offset-11" >
-        <span id="closeid"style="margin-left: 107%;" class="close">&times;</span>
+        <span id="closeid"style="margin-left: 107%;" onclick="close()" class="close">&times;</span>
     </div>
     <div class="col">
         <label>Порт</label>
@@ -177,13 +179,13 @@
 
     // Get the <span> element that closes the modal
     var span = document.getElementById("closeid");
-    var DataPort = [];
+    var DataWether = [];
 
         @{
-            foreach(var port in ViewBag.Weather)
+            foreach(var wether in ViewBag.Weather)
             {
               int i = 0;
-              <text>DataPort[@i] = "@port";</text>
+              <text>DataWether[@i] = "@wether";</text>
               i++;
             }
           }
@@ -196,55 +198,57 @@
         $(document).ready(function () {
             $('.datepicker').datepicker();
         })
-    function Open(port) {
-        console.log(port);
+    function Open(weather) {
+        console.log(weather);
 
-        console.log(UpdateNePort);
-        if (port != null) {
+        
+        if (weather != null) {
             modal.style.display = "block";
-            var UpdateNePort = port.id;
-            var portId = port.id;
+            var UpdateNeWeather = weather.id;
+            var weatherId = weather.id;
 
 
-            var DataPort = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewData["AllPort"]));
-            console.log(DataPort);
+            var DataWeaather = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewData["Weather"]));
+            console.log(DataWeaather);
             var indexUp;
-            $.each(DataPort, function (index, value) {
+            $.each(DataWeaather, function (index, value) {
 
 
-                if (value.PortId == UpdateNePort)
+                if (value.WeatherId == UpdateNeWeather)
                 {
                     indexUp = value;
                     $("#Name").val(value.Name);
-                    $("#Area").val(value.Area);
-                    $("#CountPrich").val(value.CountPrichal);
-                    $("#Deptch").val(value.Depth);
-                    $("#TypePort").val(value.TypePort);
-                    $("#City").val(value.CityId);
-                    $("#PortId").val(value.PortId);
+                    $("#Date").val(value.Date);
+                    $("#HeightWave").val(value.HeightWave);
+                    $("#Temperature").val(value.Temperature);
+                    $("#WindSpeed").val(value.WindSpeed);
+                    $("#WeatherId").val(value.WeatherId);
+                    $("#PortId").val(value.Port.PortId);
 
                 }
                 console.log('Индекс: ' + index + '; Значение: ' + value.PortId);
 
             });
-            var portUpdate = $(DataPort).find(i => i.PortId == UpdateNePort);
-            console.log(portUpdate);
+          
 
         }
         else {
             $("#Name").val(null);
-            $("#Area").val(null);
-            $("#CountPrich").val(null);
-            $("#Deptch").val(null);
-            $("#TypePort").val(null);
-            $("#City").val(null);
-            $("#PortId").val(null);
+            $("#Date").val(null);
+            $("#HeightWave").val(null);
+            $("#Temperature").val(null);
+            $("#WindSpeed").val(null);
+            $("#WeatherId").val(null);
             debugger;
             modal.style.display = "block";
         }
 
     };
-    // When the user clicks on <span> (x), close the modal
+        // When the user clicks on <span> (x), close the modal
+        function close()
+        {
+            modal.style.display = "none";
+        }
     span.onclick = function () {
 
         modal.style.display = "none";

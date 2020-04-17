@@ -80,8 +80,22 @@ namespace Kurs.Controllers
         [HttpPost]
         public IActionResult AddWeather(Weather weather)
         {
-            weather.WeatherId = Guid.NewGuid();
-            EFRepositoryWeather.Create(weather);
+            var WeatherUp = EFRepositoryWeather.FindById(weather.WeatherId);
+            if (WeatherUp != null)
+            {
+                WeatherUp.Date = weather.Date;
+                WeatherUp.PortId = weather.PortId;
+                WeatherUp.Temperature = weather.Temperature;
+                WeatherUp.WindSpeed = weather.WindSpeed;
+                WeatherUp.HeightWave = weather.HeightWave;
+                EFRepositoryWeather.Update(WeatherUp);
+            }
+            else 
+            {
+                weather.WeatherId = Guid.NewGuid();
+                EFRepositoryWeather.Create(weather);
+            }
+            
             return Redirect("/Port/Weather");
         }
 
