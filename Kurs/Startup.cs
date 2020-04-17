@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Data.GenericRepozitory;
+using Newtonsoft;
 
 namespace Kurs
 {
@@ -31,7 +32,6 @@ namespace Kurs
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
             services.AddScoped(typeof(IEFRepository <>), typeof(EFRepozitor<>));
             services.AddControllersWithViews();
-       
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

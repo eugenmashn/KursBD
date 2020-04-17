@@ -33,7 +33,7 @@ namespace Kurs.Controllers
 
             if (sortPort.Depth == 0 && sortPort .CountPrichal == 0)
             {
-                ViewBag.AllPort = EFRepositoryPort.IncludeGet(i => i.Weathers);
+                ViewBag.AllPort = EFRepositoryPort.Get();
             }
             else
             {
@@ -91,12 +91,37 @@ namespace Kurs.Controllers
             ViewBag.Cities = EFRepositoryCity.Get();
             return View();
         }
+        public IActionResult DeletePort(Guid portID)
+        {
+            try
+            {
+                EFRepositoryPort.Remove(EFRepositoryPort.FindById(portID));
+            }
+            catch { }
+            return Redirect("/Port/AllPort");
+        }
+
         [HttpPost]
 
         public IActionResult AddPort(Port port)
         {
-            port.PortId = Guid.NewGuid();
-            EFRepositoryPort.Create(port);
+            if (EFRepositoryPort.FindById(port.PortId) != null)
+            {
+                var UpPort = EFRepositoryPort.FindById(port.PortId);
+                UpPort.Name = port.Name;
+                UpPort.TypePort = port.TypePort;
+                UpPort.Area = port.Area;
+                UpPort.CityId = port.CityId;
+                UpPort.Depth = port.Depth;
+                UpPort.CountPrichal = UpPort.CountPrichal;
+         
+                EFRepositoryPort.Update(UpPort);
+            }
+            else { 
+                port.PortId = Guid.NewGuid();
+                EFRepositoryPort.Create(port);
+            }
+           
             return Redirect("/Port/AllPort");
         }
     }

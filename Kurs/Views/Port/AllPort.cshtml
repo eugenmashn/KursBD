@@ -1,5 +1,6 @@
 ﻿
 @using Kurs.Models
+@using Newtonsoft;
 @model  Data.Models.Port
 @{ 
     ViewData["Title"] = "AllPort";
@@ -16,6 +17,7 @@
         }
         );
     }
+    object portUp;
 }
 <style>
     .modal {
@@ -90,20 +92,21 @@
         @foreach (var port in ViewBag.AllPort)
         {
 
-            <tr>
-                <th scope="row">@port.Name </th>
-                <th scope="row">@port.TypePort </th>
-                <th scope="row">@port.Area </th>
-                <th scope="row">@port.CountPrichal </th>
-                <th scope="row">@port.Depth </th>
-
-            </tr>
+        <tr>
+            <th scope="row">@port.Name </th>
+            <th scope="row">@port.TypePort </th>
+            <th scope="row">@port.Area </th>
+            <th scope="row">@port.CountPrichal </th>
+            <th scope="row">@port.Depth </th>
+            <th scope="row"><a asp-area="" asp-controller="Port" asp-action="DeletePort" asp-route-portID="@port.PortId" ><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Delete</button></a></th>
+            <th scope="row"><a><input type="button" onclick="Open(this)" id="@port.PortId" value="Змінити" /> </a></th>
+        </tr>
 
         }
     </tbody>
 </table>
 
-<input type="button" value="Добавити порт" id="myBtn" />
+<input type="button"onclick="Open()" value="Добавити порт" id="myBtnF" />
 <div id="myModal" class="modal">
 
     <!-- Modal content -->
@@ -116,35 +119,38 @@
             </div>
             <div class="row">
                 <label>Назва</label>
-                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                @Html.TextBoxFor(m => m.Name, new {@id="Name", @class = "form-control" })
                 @*//<input type="text" name="TeamName" placeholder="Team NAme" class="form-control" />*@
             </div>
             <div class="row">
                 <label>Площа</label>
-                @Html.TextBoxFor(m => m.Area, new { @class = "form-control", @type = "number" })
+                @Html.TextBoxFor(m => m.Area, new { @id = "Area", @class = "form-control", @type = "number" })
                 @*<input type="number" class="form-control" name="MinNumberWorkers">*@
             </div>
 
             <div class="row ">
                 <label> Кількість причалів</label>
-                @Html.TextBoxFor(m => m.CountPrichal, new { @class = "form-control", @type = "number" })
+                @Html.TextBoxFor(m => m.CountPrichal, new { @id = "CountPrich", @class = "form-control", @type = "number" })
             </div>
             <div class="row ">
                 <label> Глибина</label>
-                @Html.TextBoxFor(m => m.Depth, new { @class = "form-control", @type = "number" })
+                @Html.TextBoxFor(m => m.Depth, new { @id = "Deptch", @class = "form-control", @type = "number" })
             </div>
             <div class="row ">
                 <label> Тип порту</label>
-                @Html.TextBoxFor(m => m.TypePort, new { @class = "form-control" })
+                @Html.TextBoxFor(m => m.TypePort, new { @id = "TypePort", @class = "form-control" })
             </div>
             <div class="row ">
                 <label>Місто</label>
                 @Html.DropDownListFor(m => m.CityId, listItems, "-- Select Status --", new
-                {
-                    @class = "form-control"
-                })
+           {
+               @id = "City",
+               @class = "form-control"
+           })
             </div>
-
+            <div>
+                <input name="PortId" id="PortId" hidden />
+            </div>
             <div style="margin:20px 0px ">
                 <button type="submit" class=" btn btn-primary btn-block">Добавити</button>
             </div>
@@ -155,21 +161,78 @@
 </div>
 <script>
     // Get the modal
+
     var modal = document.getElementById("myModal");
 
     // Get the button that opens the modal
     var btn = document.getElementById("myBtn");
+    var btn = document.getElementById("myBtn");
 
     // Get the <span> element that closes the modal
     var span = document.getElementById("closeid");
+    var DataPort = [];
 
-    // When the user clicks the button, open the modal
-    btn.onclick = function () {
-        modal.style.display = "block";
-    }
+        @{
+            foreach(var port in ViewBag.AllPort)
+            {
+              int i = 0;
+              <text>DataPort[@i] = "@port";</text>
+              i++;
+            }
+          }
+    // When the user clicks the button, open the modal\
+   
+    function Open(port) {
+        console.log(port);
+        
+        console.log(UpdateNePort);
+        if (port != null) {
+            modal.style.display = "block";
+            var UpdateNePort = port.id;
+            var portId = port.id;
 
+           
+            var DataPort = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewData["AllPort"]));
+            console.log(DataPort);
+            var indexUp;
+            $.each(DataPort, function (index, value) {
+
+                
+                if (value.PortId == UpdateNePort)
+                {
+                    indexUp = value;
+                    $("#Name").val(value.Name);
+                    $("#Area").val(value.Area);
+                    $("#CountPrich").val(value.CountPrichal);
+                    $("#Deptch").val(value.Depth);
+                    $("#TypePort").val(value.TypePort);
+                    $("#City").val(value.CityId);
+                    $("#PortId").val(value.PortId);
+
+                }
+                console.log('Индекс: ' + index + '; Значение: ' + value.PortId);
+
+            });
+            var portUpdate = $(DataPort).find(i => i.PortId == UpdateNePort); 
+            console.log(portUpdate);
+
+        }
+        else {
+            $("#Name").val(null);
+            $("#Area").val(null);
+            $("#CountPrich").val(null);
+            $("#Deptch").val(null);
+            $("#TypePort").val(null);
+            $("#City").val(null);
+            $("#PortId").val(null);
+            debugger;
+            modal.style.display = "block";
+        }
+
+    };
     // When the user clicks on <span> (x), close the modal
     span.onclick = function () {
+
         modal.style.display = "none";
     }
 

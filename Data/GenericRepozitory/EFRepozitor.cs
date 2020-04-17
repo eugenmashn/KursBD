@@ -59,7 +59,8 @@ namespace Data.GenericRepozitory
         }
         public void Update(TEntity item)
         {
-            _context.Entry(item).State = _context.Entry(item).State;
+            _dbSet.Update(item);
+            _context.Entry(item).State = EntityState.Modified;
             _context.SaveChanges();
         }
 

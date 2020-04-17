@@ -15,7 +15,7 @@ namespace Data.Models
         public int Depth { get; set; }
         public int CountPrichal { get; set; }
         public Guid CityId { get; set; }
-        public City City { get; set; }
+        public City City { get; set; }        
         public ICollection<Weather> Weathers{get;set;}
     }
 }

@@ -1,25 +1,56 @@
-﻿@model Kurs.Models.SortWeather
-@{
-    ViewData["Title"] = "Weather";
-}
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+﻿@model Data.Models.Weather
 
 
+    
 
-        <link src="~/lib/jqueryui/jquery-ui.min.css" rel="stylesheet" />
-        <script src="~/lib/jqueryui/jquery-ui.min.js"></script>
-        <script type="text/javascript">
-            $(function () {
-                $(".date-picker").datepicker({
-                    dateFormat: 'dd-M-yy'
-                });
+        <<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        =<!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
 
-            });
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
 
-        </script>
-    </head>
+
+        <style>
+            .modalF {
+                display: none; /* Hidden by default */
+                position: fixed; /* Stay in place */
+                z-index: 1; /* Sit on top */
+                padding-top: 100px; /* Location of the box */
+                left: 0;
+                top: 0;
+                width: 100%; /* Full width */
+                height: 100%; /* Full height */
+                overflow: auto; /* Enable scroll if needed */
+                background-color: rgb(0,0,0); /* Fallback color */
+                background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            }
+
+            /* Modal Content */
+            .modal-contentF {
+                background-color: #fefefe;
+                margin: auto;
+                padding: 20px;
+                border: 1px solid #888;
+                width: 60%;
+            }
+
+            /* The Close Button */
+            .close {
+                color: #aaaaaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+
+                .close:hover,
+                .close:focus {
+                    color: #000;
+                    text-decoration: none;
+                    cursor: pointer;
+                }
+        </style>
+    
 
 @{
     List<SelectListItem> listItems = new List<SelectListItem>();
@@ -37,16 +68,26 @@
 {
     <div class="col">
         <label>Порт</label>
-        @Html.DropDownListFor(m => m.PortId, listItems, "-- Select Status --", new
-        {
-            @class = "form-control"
-        })
+        <D class="form-control" type="number" name="PortId" />
+        <select id="cars" name="PortId">
+            <option value="">
+            </option>
+
+            @foreach (var Port in ViewBag.Port)
+            {
+                <option value="@Port.PortId">
+                    @Port.Name
+                </option>
+
+
+            }
+
+        </select>
     </div>
 
     <div class="col ">
-        <label>Дата</label>
-        @Html.EditorFor(m => m.Date,
-        new { htmlAttributes = new { @class = "form-control " } })
+     
+        <input name="Date" type="text" placeholder="Дата" class="datepicker"/>
     </div>
 
 
@@ -68,19 +109,153 @@
         @foreach (var weather in ViewBag.Weather)
         {
 
-        <tr>
-            <th scope="row">@weather.Port.Name </th>
-            <th scope="row">@weather.Temperature </th>
-            <th scope="row">@weather.HeightWave </th>
-            <th scope="row">@weather.WindSpeed </th>
-            <th scope="row">@weather.Date </th>
+            <tr>
+                <th scope="row">@weather.Port.Name </th>
+                <th scope="row">@weather.Temperature </th>
+                <th scope="row">@weather.HeightWave </th>
+                <th scope="row">@weather.WindSpeed </th>
+                <th scope="row">@weather.Date </th>
 
-        </tr>
+            </tr>
 
         }
     </tbody>
 </table>
 
-<input type="button" value="Добавити порт" onclick="@("window.location.href='" + @Url.Action("AddWeather", "Port") + "'");" />
+<input type="button" onclick="Open()" value="Добавити погоду" id="myBtnF" />
+<div id="myModal" class="modalF ">
+    <!-- Modal content -->
+    <div class="modal-contentF">
+        @using (Html.BeginForm("AddWeather", "Port", FormMethod.Post))
+        {
+    <div class="container">
+    <div class="row offset-11" >
+        <span id="closeid"style="margin-left: 107%;" class="close">&times;</span>
+    </div>
+    <div class="col">
+        <label>Порт</label>
+        @Html.DropDownListFor(m => m.PortId, listItems, "-- Select Status --", new
+        {
+            @id = "PortId",
+            @class = "form-control"
+        })
+    </div>
 
+    <div class="col ">
+        <label>Дата</label>
+        <input name="Date" type="text"id = "Date" placeholder="Дата" class="datepicker" />
+    </div>
+    <div class="col ">
+        <label>Висота хвилі</label>
+        @Html.TextBoxFor(m => m.HeightWave, new { @id = "HeightWave", @class = "form-control", @type = "number" })
+    </div>
+    <div class="col ">
+        <label>Температура</label>
+        @Html.TextBoxFor(m => m.Temperature, new { @id = "Temperature", @class = "form-control", @type = "number" })
+    </div>
+    <div class="col ">
+        <label>Швидкість вітра</label>
+        @Html.TextBoxFor(m => m.WindSpeed, new { @id = "WindSpeed", @class = "form-control", @type = "number" })
+    </div>
+    <div>
+        <input name="WeatherId" id="WeatherId" hidden />
+    </div>
+    <div style="margin:20px 0px ">
+        <button type="submit"  class=" btn btn-primary btn-block">Добавити</button>
+    </div>
+    </div>
+        }
+    </div>
+    <script>
+    // Get the modal
+
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementById("closeid");
+    var DataPort = [];
+
+        @{
+            foreach(var port in ViewBag.Weather)
+            {
+              int i = 0;
+              <text>DataPort[@i] = "@port";</text>
+              i++;
+            }
+          }
+    // When the user clicks the button, open the modal\
+       
+
+        // Or with jQuery
+
+       
+        $(document).ready(function () {
+            $('.datepicker').datepicker();
+        })
+    function Open(port) {
+        console.log(port);
+
+        console.log(UpdateNePort);
+        if (port != null) {
+            modal.style.display = "block";
+            var UpdateNePort = port.id;
+            var portId = port.id;
+
+
+            var DataPort = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewData["AllPort"]));
+            console.log(DataPort);
+            var indexUp;
+            $.each(DataPort, function (index, value) {
+
+
+                if (value.PortId == UpdateNePort)
+                {
+                    indexUp = value;
+                    $("#Name").val(value.Name);
+                    $("#Area").val(value.Area);
+                    $("#CountPrich").val(value.CountPrichal);
+                    $("#Deptch").val(value.Depth);
+                    $("#TypePort").val(value.TypePort);
+                    $("#City").val(value.CityId);
+                    $("#PortId").val(value.PortId);
+
+                }
+                console.log('Индекс: ' + index + '; Значение: ' + value.PortId);
+
+            });
+            var portUpdate = $(DataPort).find(i => i.PortId == UpdateNePort);
+            console.log(portUpdate);
+
+        }
+        else {
+            $("#Name").val(null);
+            $("#Area").val(null);
+            $("#CountPrich").val(null);
+            $("#Deptch").val(null);
+            $("#TypePort").val(null);
+            $("#City").val(null);
+            $("#PortId").val(null);
+            debugger;
+            modal.style.display = "block";
+        }
+
+    };
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+        }
+
+    </script>
 
