@@ -76,7 +76,18 @@ namespace Kurs.Controllers
             ViewBag.Port = EFRepositoryPort.Get();
             return View();
         }
-       
+
+        public IActionResult DeleteWeather( Guid weatherID)
+        {
+            try
+            {
+                var itemdel = EFRepositoryWeather.FindById(weatherID);
+                EFRepositoryWeather.Remove(itemdel);
+            }
+            catch { }
+            return Redirect("/Port/Weather");
+        }
+
         [HttpPost]
         public IActionResult AddWeather(Weather weather)
         {

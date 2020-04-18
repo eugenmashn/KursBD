@@ -31,6 +31,8 @@ namespace Kurs.Controllers
 
         public IActionResult Staff()
         {
+            ViewBag.Ship = EFRepositoryShip.Get();
+            ViewBag.City = EFRepositoryCity.Get();
             ViewBag.Staff = EFRepositoryStaff.IncludeGet(i => i.City).ToList();
 
             ViewBag.Staff = EFRepositoryStaff.IncludeGet( i => i.Ship).ToList();
@@ -39,14 +41,34 @@ namespace Kurs.Controllers
         public IActionResult AddStaff()
         {
             ViewBag.Ship = EFRepositoryShip.Get().ToList();
-            ViewBag.City = EFRepositoryCity.Get();
+          ;
             return View();
         }
 
         [HttpPost]
         public IActionResult AddStaff( StaffPerson staff )
         {
-            EFRepositoryStaff.Create(staff);
+            try
+            {
+                var UpStaff = EFRepositoryStaff.FindById(staff.PersonId);
+                if (UpStaff != null)
+                {
+                    UpStaff.Phone = staff.Phone;
+                    UpStaff.Position = staff.Position;
+                    UpStaff.Salary = staff.Salary;
+                    UpStaff.ShipId = staff.ShipId;
+                    UpStaff.Experience = staff.Experience;
+                    UpStaff.CityId = staff.CityId;
+                    UpStaff.BirstDay = staff.BirstDay;
+                    UpStaff.stat = staff.stat;
+                    EFRepositoryStaff.Update(UpStaff);
+                }
+                else
+                {
+                    EFRepositoryStaff.Create(staff);
+                }
+            }
+            catch { }
             return Redirect("/Staff/Staff");
         }
 

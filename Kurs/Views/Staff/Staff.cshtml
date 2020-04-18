@@ -1,18 +1,87 @@
-﻿
+﻿@model Data.Models.StaffPerson
 @{
     ViewData["Title"] = "Staff";
 }
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
 
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+@{
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    foreach (var Ship in ViewBag.Ship)
+    {
+        listItems.Add(new SelectListItem
+        {
+            Text = Ship.Name,
+            Value = Ship.ShipId.ToString()
+        });
+    }
+}
+
+@{
+    List<SelectListItem> listItemsC = new List<SelectListItem>();
+    foreach (var City in ViewBag.City)
+    {
+        listItemsC.Add(new SelectListItem
+        {
+            Text = City.Name,
+            Value = City.CityId.ToString()
+        });
+    }
+}
+<style>
+    .modalF {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modal-contentF {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 60%;
+    }
+
+    /* The Close Button */
+    .close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+</style>
 
 <table class="table table-dark">
     <thead>
-    <th scope="col"> Прізвища </th>
     <th scope="col"> Ім'я </th>
+    <th scope="col"> Прізвища </th>
+
     <th scope="col">День народження</th>
     <th scope="col">Стать</th>
     <th scope="col"> Місто проживання</th>
     <th scope="col"> Номер телефону</th>
     <th scope="col"> Стаж праці </th>
+    <th scope="col"> Заробітня плата </th>
     <th scope="col"> Посада </th>
     <th scope="col"> Назва корабля </th>
     </thead>
@@ -32,10 +101,159 @@
                 <th scope="row">@staff.Salary </th>
                 <th scope="row">@staff.Position </th>
                 <th scope="row">@staff.Ship.Name </th>
+                <th scope="row"><a><input type="button" onclick="Open(this)" id="@staff.PersonId" value="Змінити" /> </a></th>
+
             </tr>
 
         }
     </tbody>
 </table>
+<input type="button" onclick="Open()" value="Добавити робітника" id="myBtnF" />
 
-<input type="button" value="Добавити корабль" onclick="@("window.location.href='" + @Url.Action("AddStaff", "Staff") + "'");" />
+<div id="myModal" class="modalF ">
+    <!-- Modal content -->
+    <div class="modal-contentF">
+        @using (Html.BeginForm("AddStaff", "Staff", FormMethod.Post))
+        {
+        <div class="container">
+            <div class="row offset-11">
+                <span id="closeid" style="margin-left: 107%;" onclick="close()" class="close">&times;</span>
+            </div>
+            <div class="col">
+                <label>Ім'я</label>
+                @Html.TextBoxFor(m => m.FirstName, new { @id = "FirstName", @class = "form-control" })
+                @*//<input type="text" name="TeamName" placeholder="Team NAme" class="form-control" />*@
+            </div>
+            <div class="col">
+                <label>Прізвища</label>
+                @Html.TextBoxFor(m => m.LastName, new { @id = "LastName", @class = "form-control" })
+                @*<input type="number" class="form-control" name="MinNumberWorkers">*@
+            </div>
+
+            <div class="col ">
+                <label> Телефон </label>
+                @Html.TextBoxFor(m => m.Phone, new { @id = "Phone", @class = "form-control" })
+            </div>
+            <div class="col ">
+                <label> Стать </label>
+                @Html.TextBoxFor(m => m.stat, new { @id = "Phone", @class = "form-control" })
+            </div>
+            <div class="col ">
+                <label> Професія </label>
+                @Html.TextBoxFor(m => m.Position, new { @id = "Position", @class = "form-control" })
+            </div>
+            <div class="col ">
+                <label> Заробітня плата </label>
+                @Html.TextBoxFor(m => m.Salary, new { @id = "Salary", @class = "form-control", @type = "number" })
+            </div>
+            <div class="col ">
+                <label>Корабель де працює робітни</label>
+                @Html.DropDownListFor(m => m.ShipId, listItems, "-- Select Status --", new
+                   {
+                       @id = "PortId",
+                       @class = "form-control"
+                   })
+            </div>
+            <div class="col ">
+                <label> Місто де живе працівник робітник </label>
+                @Html.DropDownListFor(m => m.CityId, listItemsC, "-- Select Status --", new
+               {
+                   @id = "CityId",
+                   @class = "form-control"
+               })
+            </div>
+            <div>
+                <input name="PersonId" id="PersonId" hidden />
+            </div>
+            <div style="margin:20px 0px ">
+                <button type="submit" class=" btn btn-primary btn-block">Добавити</button>
+            </div>
+        </div>
+        }
+    </div>
+    <script>
+    // Get the modal
+
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementById("closeid");
+
+    // When the user clicks the button, open the modal\
+
+
+        // Or with jQuery
+
+
+        $(document).ready(function () {
+            $('.datepicker').datepicker();
+        })
+    function Open(staff) {
+
+
+
+        if (staff != null) {
+            modal.style.display = "block";
+            var UpdateNestaff = staff.id;
+
+
+            var DataStaff = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewData["Staff"]));
+
+            var indexUp;
+            $.each(DataStaff, function (index, value) {
+
+
+                if (value.PersonId == UpdateNestaff)
+                {
+                    indexUp = value;
+                    $("#FirstName").val(value.FirstName);
+                    $("#LastName").val(value.LastName);
+                    $("#Phone").val(value.Phone);
+                    $("#Position").val(value.Position);
+                    $("#Salary").val(value.Salary);
+                    $("#CityId").val(value.CityId);
+                    $("#ShipId").val(value.ShipId);
+                    $("#PersonId").val(value.PersonId);
+                }
+
+            });
+
+
+        }
+        else {
+
+        
+            $("#FirstName").val(null);
+            $("#LastName").val(null);
+            $("#Phone").val(null);
+            $("#Position").val(null);
+            $("#Salary").val(null);
+            $("#CityId").val(null);
+            $("#ShipId").val(null);
+            debugger;
+            modal.style.display = "block";
+        }
+
+    };
+        // When the user clicks on <span> (x), close the modal
+        function close()
+        {
+            modal.style.display = "none";
+        }
+    span.onclick = function () {
+
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+        }
+
+    </script>

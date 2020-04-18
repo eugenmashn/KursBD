@@ -33,7 +33,8 @@ namespace Kurs.Controllers
         [HttpPost]
         public IActionResult Ships(ShipSort shipSort)
         {
-            if( shipSort.Lenght != 0)
+            ViewBag.Ports = EFRepositoryPort.Get();
+            if ( shipSort.Lenght != 0)
             {
                 if(shipSort.Witch != 0) 
                 {
@@ -56,11 +57,13 @@ namespace Kurs.Controllers
         [HttpGet]
         [HttpPost]
         public IActionResult Visits()
+
         {
             var visits = EFRepositoryVisits.IncludeGet(i => i.Port).ToList();
 
             var Visits = EFRepositoryVisits.IncludeGet(i => i.Ship ).ToList();
             ViewBag.Visits = Visits;
+            ViewBag.Port = EFRepositoryPort.Get().ToList();
             ViewBag.Ship = EFRepositoryShip.Get().ToList();
             return View();
         }
@@ -73,10 +76,24 @@ namespace Kurs.Controllers
         }
         [HttpPost]
         public IActionResult AddVisit(Visits visits)
-        {
+        {           
             ViewBag.Ship = EFRepositoryShip.Get().ToList();
+
+            var UpDatVis = EFRepositoryVisits.FindById(visits.VisitsId);
+            if (UpDatVis != null)
+            {
+                UpDatVis.DateArrival = visits.DateArrival;
+                UpDatVis.DateDeparture = visits.DateDeparture;
+                UpDatVis.NumberPrich = visits.NumberPrich;
+                UpDatVis.PortId = visits.PortId;
+                UpDatVis.ShipId = visits.ShipId;
+                EFRepositoryVisits.Update(UpDatVis);
+            }
+            else 
+            {
+                EFRepositoryVisits.Create(visits);
+            }
            
-            EFRepositoryVisits.Create(visits);
             return Redirect("/Ship/Visits");
         }
 
@@ -88,18 +105,27 @@ namespace Kurs.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddShip(ShipView ship)
+        public IActionResult AddShip(Ship ship)
         {
 
-            Ship newShip = new Ship();
-            newShip.Name = ship.Name;
-            newShip.Lenght = ship.Lenght;
-            newShip.color = ship.color;
-            newShip.PortId =Guid.Parse(ship.portPrip);
-            newShip.ShipId = Guid.NewGuid();
-            newShip.Witch = ship.Witch;
-            newShip.TypeShip = ship.TypeShip;
-            EFRepositoryShip.Create(newShip);
+            var newShip = EFRepositoryShip.FindById(ship.ShipId);
+            if (newShip != null)
+            { 
+                newShip.Name = ship.Name;
+                newShip.Lenght = ship.Lenght;
+                newShip.color = ship.color;
+                newShip.PortId =ship.PortId;
+                
+                newShip.Witch = ship.Witch;
+                newShip.TypeShip = ship.TypeShip;
+                EFRepositoryShip.Update(newShip);
+            }
+            else
+            {
+                EFRepositoryShip.Create(ship);
+            }
+            
+            
             return Redirect("/Ship/Ships");
         }
         

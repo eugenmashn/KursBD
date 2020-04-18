@@ -68,21 +68,13 @@
 {
     <div class="col">
         <label>Порт</label>
-        <D class="form-control" type="number" name="PortId" />
-        <select id="cars" name="PortId">
-            <option value="">
-            </option>
-
-            @foreach (var Port in ViewBag.Port)
-            {
-                <option value="@Port.PortId">
-                    @Port.Name
-                </option>
+        @Html.DropDownList("PortId",listItems, "-- Select Status --", new
+   {
+       @id = "PortId",
+       @class = "form-control"
+   })
 
 
-            }
-
-        </select>
     </div>
 
     <div class="col ">
@@ -116,6 +108,7 @@
             <th scope="row">@weather.WindSpeed </th>
             <th scope="row">@weather.Date </th>
             <th scope="row"><a><input type="button" onclick="Open(this)" id="@weather.WeatherId" value="Змінити" /> </a></th>
+            <th scope="row"><a asp-area="" asp-controller="Port" asp-action="DeleteWeather" asp-route-weatherID="@weather.WeatherId"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Delete</button></a></th>
 
 
         </tr>

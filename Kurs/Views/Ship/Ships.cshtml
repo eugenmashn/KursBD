@@ -1,21 +1,42 @@
-﻿@model Kurs.Models.ShipSort
+﻿@model Data.Models.Ship
 @{
     ViewData["Title"] = "Ships";
 }
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
 
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+
+
+@{
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    foreach (var Port in ViewBag.Ports)
+    {
+        listItems.Add(new SelectListItem
+        {
+            Text = Port.Name,
+            Value = Port.PortId.ToString()
+        });
+    }
+}
 @using (Html.BeginForm("Ships", "Ship", FormMethod.Post))
 {
 
     <div class="col">
-        <label>Менше довжини</label>
-        @Html.TextBoxFor(m => m.Witch, new { @class = "form-control", @type = "number" })
+        <label>Менше Ширини</label>
+
+        <input name="Witch" type="number" placeholder="Дата" class="number" />
+
         @*<input type="number" class="form-control" name="MinNumberWorkers">*@
     </div>
 
 
     <div class="col ">
-        <label> Менше ширини</label>
-        @Html.TextBoxFor(m => m.Lenght, new { @class = "form-control", @type = "number" })
+        <label> Менше довжини</label>
+        <input name="Lenght" type="number" placeholder="Дата" class="number" />
+
     </div>
 
 
@@ -23,7 +44,45 @@
         <button type="submit" class=" btn btn-primary btn-block">Filter</button>
     </div>
 }
+<style>
+    .modalF {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
 
+    /* Modal Content */
+    .modal-contentF {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 60%;
+    }
+
+    /* The Close Button */
+    .close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+</style>
 <table class="table table-dark">
     <thead>
     <th scope="col">Назва корабля </th>
@@ -45,11 +104,149 @@
                 <th scope="row">@ship.Witch </th>
                 <th scope="row">@ship.Port.Name </th>
                 <th scope="row">@ship.color </th>
+                <th scope="row"><a><input type="button" onclick="Open(this)" id="@ship.ShipId" value="Змінити" /> </a></th>
+
             </tr>
 
         }
     </tbody>
 </table>
 
-<input type="button" value="Добавити корабль" onclick="@("window.location.href='" + @Url.Action("AddShip", "Ship") + "'");" />
 
+
+
+
+<input type="button" onclick="Open()" value="Добавити корабль" id="myBtnF" />
+<div id="myModal" class="modalF ">
+    <!-- Modal content -->
+    <div class="modal-contentF">
+        @using (Html.BeginForm("AddShip", "Ship", FormMethod.Post))
+        {
+            <div class="container">
+                <div class="row offset-11">
+                    <span id="closeid" style="margin-left: 107%;" onclick="close()" class="close">&times;</span>
+                </div>
+                <div class="col">
+                    <label>Назва</label>
+                    @Html.TextBoxFor(m => m.Name, new { @id = "Name", @class = "form-control" })
+                    @*//<input type="text" name="TeamName" placeholder="Team NAme" class="form-control" />*@
+                </div>
+                <div class="col">
+                    <label>Довжина</label>
+                    @Html.TextBoxFor(m => m.Lenght, new { @id = "Lenght", @class = "form-control", @type = "number" })
+                    @*<input type="number" class="form-control" name="MinNumberWorkers">*@
+                </div>
+
+                <div class="col ">
+                    <label> Ширина </label>
+                    @Html.TextBoxFor(m => m.Witch, new { @id = "Witch", @class = "form-control", @type = "number" })
+                </div>
+                <div class="col ">
+                    <label> Тип корабля</label>
+                    @Html.TextBoxFor(m => m.TypeShip, new { @id = "TypeShip", @class = "form-control" })
+                </div>
+                <div class="col ">
+                    <label> Колір </label>
+                    @Html.TextBoxFor(m => m.color, new { @id = "color", @class = "form-control" })
+                </div>
+                <div class="col ">
+                    <label>Порт приписки</label>
+                    @Html.DropDownListFor(m => m.PortId, listItems, "-- Select Status --", new
+                       {
+                           @id = "PortId",
+                           @class = "form-control"
+                       })
+                </div>
+                <div>
+                    <input name="ShipId" id="ShipId" hidden />
+                </div>
+                <div style="margin:20px 0px ">
+                    <button type="submit" class=" btn btn-primary btn-block">Добавити</button>
+                </div>
+            </div>
+        }
+    </div>
+    <script>
+    // Get the modal
+
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementById("closeid");
+ 
+    // When the user clicks the button, open the modal\
+
+
+        // Or with jQuery
+
+
+        $(document).ready(function () {
+            $('.datepicker').datepicker();
+        })
+    function Open(ship) {
+      
+
+
+        if (ship != null) {
+            modal.style.display = "block";
+            var UpdateNeship = ship.id;
+
+
+            var DataShip = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewData["Ships"]));
+            console.log(DataShip);
+            var indexUp;
+            $.each(DataShip, function (index, value) {
+
+
+                if (value.ShipId == UpdateNeship)
+                {
+                    indexUp = value;
+                    $("#Name").val(value.Name);
+                    $("#Lenght").val(value.Lenght);
+                    $("#Witch").val(value.Witch);
+                    $("#TypeShip").val(value.TypeShip);
+                    $("#color").val(value.color);
+                    $("#PortId").val(value.PortId);
+                    $("#ShipId").val(value.ShipId);
+                }
+                console.log('Индекс: ' + index + '; Значение: ' + value.PortId);
+
+            });
+
+
+        }
+        else {
+            $("#Name").val(null);
+            $("#Lenght").val(null);
+            $("#Witch").val(null);
+            $("#TypeShip").val(null);
+            $("#color").val(null);
+            $("#PortId").val(null);
+            $("#ShipId").val(null);
+            debugger;
+            modal.style.display = "block";
+        }
+
+    };
+        // When the user clicks on <span> (x), close the modal
+        function close()
+        {
+            modal.style.display = "none";
+        }
+    span.onclick = function () {
+
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+        }
+
+    </script>
