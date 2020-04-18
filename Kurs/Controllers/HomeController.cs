@@ -16,13 +16,15 @@ namespace Kurs.Controllers
         private readonly ILogger<HomeController> _logger;
         public IEFRepository<Ship> EFRepositoryShip;
         public IEFRepository<City> EFRepositoryCity;
+        public IEFRepository<Port> EFRepositoryPort;
         public IEFRepository<Country> EFRepositoryCountries;
-        public HomeController(ILogger<HomeController> logger, IEFRepository<Ship> eFRepositoryShip, IEFRepository<City> eFRepositoryCity, IEFRepository<Country> eFRepositoryCountries)
+        public HomeController(ILogger<HomeController> logger, IEFRepository<Ship> eFRepositoryShip, IEFRepository<City> eFRepositoryCity, IEFRepository<Country> eFRepositoryCountries, IEFRepository<Port> eFRepositoryPort)
         {
             _logger = logger;
             EFRepositoryShip = eFRepositoryShip;
             EFRepositoryCity = eFRepositoryCity;
             EFRepositoryCountries = eFRepositoryCountries;
+            EFRepositoryPort = eFRepositoryPort;
         }
 
         public IActionResult Index()
@@ -32,8 +34,34 @@ namespace Kurs.Controllers
 
         public IActionResult CityAndCountry()
         {
+            var Data = EFRepositoryPort.IncludeGet(i => i.City).ToList();
+            var Country = EFRepositoryCountries.Get();
+            var DataCountry = new List<ViewCount>();
+            foreach (var i in Data)
+            {
+                string CountryName = Country.First(k => k.CountryId == i.City.CountryId).Name;
+                var DataType = DataCountry.FirstOrDefault(l => l.typeOfPort == i.TypePort && l.Name == CountryName);
+                if (DataType != null)
+                {
+                    DataCountry.Remove(DataType);
+                    DataType.Coun++;
+                    DataCountry.Add(DataType);
+                }
+                else
+                {
+                    
+                    DataType = new ViewCount()
+                    {
+                        Name = CountryName,
+                        Coun = 1,
+                        typeOfPort = i.TypePort,
+                        CountId =Guid.NewGuid()
+                    };
+                    DataCountry.Add(DataType);
+                }
+            }
 
-            return View(EFRepositoryCity.IncludeGet(i => i.Country));
+            return View(DataCountry);
         }
         [HttpGet]
         public IActionResult AddCountry()

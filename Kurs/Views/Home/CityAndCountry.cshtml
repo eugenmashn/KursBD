@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Data.Models.City>
+﻿@model IEnumerable<Kurs.Models.ViewCount>
 @{
     ViewData["Title"] = "City&&Country";
 }
@@ -7,9 +7,9 @@
 
 <table class="table table-dark">
     <thead>
-    <th scope="col">Назва </th>
-    <th scope="col">Країна </th>
-    <th scope="col">Чи існує порт </th>
+    <th scope="col">Назва Країни </th>
+    <th scope="col">Тип порту </th>
+    <th scope="col">Кількість </th>
     </thead>
     <tbody>
 
@@ -18,8 +18,8 @@
 
             <tr>
                 <th scope="row">@city.Name </th>
-                <th scope="row">@city.Country.Name </th>
-                <th scope="row">@city.IsPort </th>
+                <th scope="row">@city.typeOfPort  </th>
+                <th scope="row">@city.Coun</th>
             </tr>
         }
     </tbody>
