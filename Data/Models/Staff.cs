@@ -15,6 +15,7 @@ namespace Data.Models
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime BirstDay { get; set; }
         public string stat { get; set; }
+        public DateTime Arrived { get; set; }
         public Guid CityId { get; set; }
         public City City { get; set; }
         public string Phone { get; set; }

@@ -34,23 +34,27 @@ namespace Kurs.Controllers
         public IActionResult Ships(ShipSort shipSort)
         {
             ViewBag.Ports = EFRepositoryPort.Get();
+            var ListData = EFRepositoryShip.IncludeGet(i => i.Port).ToList();
+
             if ( shipSort.Lenght != 0)
             {
-                if(shipSort.Witch != 0) 
-                {
-                    ViewBag.Ships = EFRepositoryShip.IncludeGet(i => i.Port).Where(i => i.Lenght < shipSort.Lenght).ToList();
-                    return View();
-                }
-            
-                ViewBag.Ships = EFRepositoryShip.IncludeGet(i => i.Port).Where(i=>i.Lenght<shipSort.Lenght && i.Witch <shipSort.Witch).ToList();
-                return View();
+
+
+
+                ListData = ListData.Where(i=>i.Lenght<shipSort.Lenght ).ToList();
+                
             }
             if (shipSort.Witch != 0)
             {
-                ViewBag.Ships = EFRepositoryShip.IncludeGet(i => i.Port).Where(i => i.Lenght < shipSort.Witch).ToList();
-                return View();
+                ListData = ListData.Where(i => i.Witch < shipSort.Witch).ToList();
+                
             }
-            ViewBag.Ships = EFRepositoryShip.IncludeGet(i => i.Port).ToList();
+            if (shipSort.CountStaff != 0)
+            {
+                ListData = ListData.Where(i => i.CountStaff == shipSort.CountStaff).ToList();
+            }
+
+            ViewBag.Ships =ListData;
             return View();
         }
 
@@ -118,6 +122,7 @@ namespace Kurs.Controllers
                 
                 newShip.Witch = ship.Witch;
                 newShip.TypeShip = ship.TypeShip;
+                newShip.CountStaff = ship.CountStaff;
                 EFRepositoryShip.Update(newShip);
             }
             else

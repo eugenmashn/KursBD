@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Data.GenericRepozitory;
 using Data.Models;
+using Kurs.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kurs.Controllers
@@ -28,7 +29,41 @@ namespace Kurs.Controllers
             EFRepositoryStaff = eFRepositoryStaff;
 
         }
+        [HttpGet]
+        [HttpPost]
+        public IActionResult Kupt( SortCapitan sortCapitan)
+        {
+            var ListDataCap = EFRepositoryStaff.Get(i => i.Position == "Капітан").ToList();
+            if (sortCapitan.Expirions != 0) 
+            {
+                ListDataCap = EFRepositoryStaff.Get(i => i.Position == "Капітан" && i.Experience == sortCapitan.Expirions).ToList();
+                if (sortCapitan.ArravedDate != default(DateTime))
+                {
+                    ListDataCap = EFRepositoryStaff.Get(i => i.Position == "Капітан" && i.Experience == sortCapitan.Expirions && i.Arrived == sortCapitan.ArravedDate ).ToList();
 
+                }
+            }
+            if (sortCapitan.ArravedDate != default(DateTime))
+            {
+                ListDataCap = EFRepositoryStaff.Get(i => i.Position == "Капітан" &&  i.Arrived == sortCapitan.ArravedDate).ToList();
+
+            }
+            var ListData = new List<Capitan>();
+           
+            foreach (var i in ListDataCap)
+            {
+                ListData.Add(
+                        new Capitan
+                        {
+                            Name = i.FirstName,
+                            LastName = i.LastName,
+                            Experitions = i.Experience,
+                            Arraved = i.Arrived
+                        });
+            } 
+            ViewBag.ListCupt = ListData;
+            return View();
+        }
         public IActionResult Staff()
         {
             ViewBag.Ship = EFRepositoryShip.Get();
@@ -48,8 +83,7 @@ namespace Kurs.Controllers
         [HttpPost]
         public IActionResult AddStaff( StaffPerson staff )
         {
-            try
-            {
+            
                 var UpStaff = EFRepositoryStaff.FindById(staff.PersonId);
                 if (UpStaff != null)
                 {
@@ -61,14 +95,15 @@ namespace Kurs.Controllers
                     UpStaff.CityId = staff.CityId;
                     UpStaff.BirstDay = staff.BirstDay;
                     UpStaff.stat = staff.stat;
+                    UpStaff.Arrived = staff.Arrived;
+                   
                     EFRepositoryStaff.Update(UpStaff);
                 }
                 else
                 {
                     EFRepositoryStaff.Create(staff);
                 }
-            }
-            catch { }
+           
             return Redirect("/Staff/Staff");
         }
 

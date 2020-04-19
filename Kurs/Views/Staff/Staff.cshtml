@@ -135,6 +135,10 @@
                 @Html.TextBoxFor(m => m.Phone, new { @id = "Phone", @class = "form-control" })
             </div>
             <div class="col ">
+                <label> Стаж </label>
+                @Html.TextBoxFor(m => m.Experience, new { @id = "Experience", @class = "form-control", @type="number"})
+            </div>
+            <div class="col ">
                 <label> Стать </label>
                 @Html.TextBoxFor(m => m.stat, new { @id = "Phone", @class = "form-control" })
             </div>
@@ -142,6 +146,19 @@
                 <label> Професія </label>
                 @Html.TextBoxFor(m => m.Position, new { @id = "Position", @class = "form-control" })
             </div>
+            <div class="col">
+                <label> Дата прибуття </label>
+                <input name="Arrived" class="datepicker" type="text" id="Arrived" placeholder="Дата прибуття" />
+
+                @*//<input type="text" name="TeamName" placeholder="Team NAme" class="form-control" />*@
+            </div>
+            <div class="col">
+                <label> Дата прибуття </label>
+                <input name="BirstDay" class="datepicker" type="text" id="BirstDay" placeholder="Дата прибуття" />
+
+                @*//<input type="text" name="TeamName" placeholder="Team NAme" class="form-control" />*@
+            </div>
+
             <div class="col ">
                 <label> Заробітня плата </label>
                 @Html.TextBoxFor(m => m.Salary, new { @id = "Salary", @class = "form-control", @type = "number" })
@@ -150,7 +167,7 @@
                 <label>Корабель де працює робітни</label>
                 @Html.DropDownListFor(m => m.ShipId, listItems, "-- Select Status --", new
                    {
-                       @id = "PortId",
+                       @id = "ShipId",
                        @class = "form-control"
                    })
             </div>
@@ -218,6 +235,9 @@
                     $("#CityId").val(value.CityId);
                     $("#ShipId").val(value.ShipId);
                     $("#PersonId").val(value.PersonId);
+                    $("#Arrived").val(value.Arrived);
+                    $("#Experience").val(value.Experience);
+                    $("#BirstDay").val(value.BirstDay);
                 }
 
             });
@@ -234,6 +254,9 @@
             $("#Salary").val(null);
             $("#CityId").val(null);
             $("#ShipId").val(null);
+            $("#Arrived").val(null);
+            $("#Experience").val(null);
+            $("#BirstDay").val(null);
             debugger;
             modal.style.display = "block";
         }

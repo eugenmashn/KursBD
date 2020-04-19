@@ -9,5 +9,6 @@ namespace Kurs.Models
     {
         public int Lenght { get; set; }
         public int Witch { get; set; }
+        public int CountStaff { get; set; }
     }
 }

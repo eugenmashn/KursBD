@@ -17,5 +17,6 @@ namespace Data.Models
         public Guid PortId { get; set; }
         public Port Port { get; set; }
         public string color { get; set; }
+        public int CountStaff { get; set; }
     }
 }
