@@ -31,6 +31,27 @@
         });
     }
 }
+
+@using (Html.BeginForm("Visits", "Ship", FormMethod.Post))
+{
+    <div class="col ">
+        <label> Тип судна </label>
+        <input name="TypeOsShip" type="text" />
+
+    </div>
+    <div class="col ">
+        <label>Порт приписки</label>
+        @Html.DropDownList("PortId", listItemsP, "-- Select Status --", new
+           {
+               @id = "PortId",
+               @class = "form-control"
+           })
+    </div>
+
+    <div style="margin:20px 0px ">
+        <button type="submit" class=" btn btn-primary btn-block">Filter</button>
+    </div>
+}
 <style>
     .modalF {
         display: none; /* Hidden by default */
@@ -70,14 +91,12 @@
             cursor: pointer;
         }
 </style>
-<table class="table table-dark">
+<table class="table table-striped">
     <thead>
     <th scope="col">Назва порту>
-    <th scope="col">Дата прибуття </th>
-    <th scope="col">Дата від'їзду</th>
-    <th scope="col">Номер причалу</th>
     <th scope="col">Ціль</th>
     <th scope="col">Назва кораблю</th>
+
     </thead>
     <tbody>
 
@@ -86,12 +105,10 @@
 
             <tr>
                 <th scope="col">@visit.Port.Name  </th>
-                <th scope="col">@visit.DateArrival</th>
-                <th scope="col">@visit.DateDeparture </th>
-                <th scope="col">@visit.NumberPrich </th>
                 <th scope="col">@visit.Purpose </th>
                 <th scope="col">@visit.Ship.Name </th>
-                <th scope="row"><a><input type="button" onclick="Open(this)" id="@visit.VisitsId" value="Змінити" /> </a></th>
+                <th scope="col">@visit.Ship.TypeShip </th>
+                <th scope="row"><a><input type="button"  class="btn btn-secondary btn-sm" onclick="Open(this)" id="@visit.VisitsId" value="Змінити" /> </a></th>
 
             </tr>
 
@@ -99,7 +116,7 @@
     </tbody>
 </table>
 
-<input type="button" onclick="Open()" value="Добавити відвідування" id="myBtnF" />
+<input type="button" onclick="Open()"  class="btn btn-secondary btn-sm" value="Добавити відвідування" id="myBtnF" />
 <div id="myModal" class="modalF ">
     <!-- Modal content -->
     <div class="modal-contentF">
@@ -127,7 +144,7 @@
                 </div>
                 <div class="col">
                     <label> Дата прибуття </label>
-                    <input name="DateArrival"  class="datepicker" type="text" id="DateArrival" placeholder="Дата прибуття"/>
+                    <input name="DateArrival" class="datepicker" type="text" id="DateArrival" placeholder="Дата прибуття" />
 
                     @*//<input type="text" name="TeamName" placeholder="Team NAme" class="form-control" />*@
                 </div>

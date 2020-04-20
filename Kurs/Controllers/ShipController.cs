@@ -58,6 +58,14 @@ namespace Kurs.Controllers
             return View();
         }
 
+        public IActionResult DeleteShip(Guid ShipId)
+        {
+            var ship = EFRepositoryShip.FindById(ShipId);
+            EFRepositoryShip.Remove(ship);
+            return Redirect("/Ship/Ships");
+
+        }
+
         [HttpGet]
         [HttpPost]
         public IActionResult Prichal( SortPrichal sortPrichal)
@@ -102,12 +110,20 @@ namespace Kurs.Controllers
 
         [HttpGet]
         [HttpPost]
-        public IActionResult Visits()
+        public IActionResult Visits( SortVisit sortVisit)
 
         {
             var visits = EFRepositoryVisits.IncludeGet(i => i.Port).ToList();
 
             var Visits = EFRepositoryVisits.IncludeGet(i => i.Ship ).ToList();
+            if (sortVisit.PortId != Guid.Empty)
+            {
+                Visits= Visits.Where(i => i.PortId == sortVisit.PortId).ToList();
+            }
+            if (sortVisit.TypeOsShip != null)
+            {
+                Visits= Visits.Where(i => i.Ship.TypeShip == sortVisit.TypeOsShip).ToList();
+            }
             ViewBag.Visits = Visits;
             ViewBag.Port = EFRepositoryPort.Get().ToList();
             ViewBag.Ship = EFRepositoryShip.Get().ToList();

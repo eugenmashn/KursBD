@@ -88,7 +88,7 @@
     </div>
 }
 
-<table class="table table-dark">
+<table class="table  table-striped">
     <thead>
     <th scope="col"> Ім'я </th>
     <th scope="col"> Прізвища </th>
@@ -101,20 +101,23 @@
         @foreach (var staff in ViewBag.Staff)
         {
 
-            <tr>
-                <th scope="row">@staff.FirstName </th>
-                <th scope="row">@staff.LastName </th>
-                <th scope="row">@staff.BirstDay </th>
+        <tr>
+            <th scope="row">@staff.FirstName </th>
+            <th scope="row">@staff.LastName </th>
+            <th scope="row">@staff.BirstDay.ToString("MMMM/dd/yyyy") </th>
 
-                <th scope="row">@staff.Salary </th>
-                <th scope="row"><a><input type="button" onclick="Open(this)" id="@staff.PersonId" value="Змінити" /> </a></th>
+            <th scope="row">@staff.Salary </th>
+            <th scope="row"><a><input type="button" class="btn btn-secondary btn-sm" onclick="Open(this)" id="@staff.PersonId" value="Змінити" /> </a></th>
+            <th scope="row"><a asp-area="" asp-controller="Staff" asp-action="DeleteStaff" asp-route-PersonId="@staff.PersonId"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Delete</button></a></th>
 
-            </tr>
+
+        </tr>
+            
 
         }
     </tbody>
 </table>
-<input type="button" onclick="Open()" value="Добавити робітника" id="myBtnF" />
+<input type="button"  class="btn btn-secondary btn-sm" onclick="Open()" value="Добавити робітника" id="myBtnF" />
 
 <div id="myModal" class="modalF ">
     <!-- Modal content -->
@@ -159,7 +162,7 @@
                     @*//<input type="text" name="TeamName" placeholder="Team NAme" class="form-control" />*@
                 </div>
                 <div class="col">
-                    <label> Дата прибуття </label>
+                    <label> День народження </label>
                     <input name="BirstDay" class="datepicker" type="text" id="BirstDay" placeholder="Дата прибуття" />
 
                     @*//<input type="text" name="TeamName" placeholder="Team NAme" class="form-control" />*@

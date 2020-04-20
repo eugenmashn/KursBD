@@ -87,7 +87,7 @@
         <button type="submit" class=" btn btn-primary btn-block">Filter</button>
     </div>
 }
-<table class="table table-dark">
+<table class="table  table-striped">
     <thead>
     <th scope="col">Назва порту </th>
     <th scope="col">Температура </th>
@@ -107,8 +107,8 @@
             <th scope="row">@weather.HeightWave </th>
             <th scope="row">@weather.WindSpeed </th>
             <th scope="row">@weather.Date.ToString("MMMM/dd/yyyy") </th>
-            <th scope="row"><a><input type="button" onclick="Open(this)" id="@weather.WeatherId" value="Змінити" /> </a></th>
-            <th scope="row"><a asp-area="" asp-controller="Port" asp-action="DeleteWeather" asp-route-weatherID="@weather.WeatherId"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Delete</button></a></th>
+            <th scope="row"><a><input type="button"  class="btn btn-secondary btn-sm" onclick="Open(this)" id="@weather.WeatherId" value="Змінити" /> </a></th>
+            <th scope="row"><a asp-area=""   asp-controller="Port" asp-action="DeleteWeather" asp-route-weatherID="@weather.WeatherId"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Delete</button></a></th>
 
 
         </tr>
@@ -117,7 +117,7 @@
     </tbody>
 </table>
 
-<input type="button" onclick="Open()" value="Добавити погоду" id="myBtnF" />
+<input type="button"  class="btn btn-secondary btn-sm" onclick="Open()" value="Добавити погоду" id="myBtnF" />
 <div id="myModal" class="modalF ">
     <!-- Modal content -->
     <div class="modal-contentF">

@@ -87,7 +87,7 @@
             cursor: pointer;
         }
 </style>
-<table class="table table-dark">
+<table class="table  table-striped">
     <thead>
     <th scope="col">Назва корабля </th>
     <th scope="col">Довжина корабля</th>
@@ -99,14 +99,15 @@
         @foreach (var ship in ViewBag.Ships)
         {
 
-            <tr>
-                <th scope="row">@ship.Name </th>
-                <th scope="row">@ship.Lenght </th>
-                <th scope="row">@ship.Witch </th>
-                <th scope="row">@ship.CountStaff </th>              
-                <th scope="row"><a><input type="button" onclick="Open(this)" id="@ship.ShipId" value="Змінити" /> </a></th>
+        <tr>
+            <th scope="row">@ship.Name </th>
+            <th scope="row">@ship.Lenght </th>
+            <th scope="row">@ship.Witch </th>
+            <th scope="row">@ship.CountStaff </th>
+            <th scope="row"><a><input class="btn btn-secondary btn-sm" type="button" onclick="Open(this)" id="@ship.ShipId" value="Змінити" /> </a></th>
+            <th scope="row"><a asp-area="" asp-controller="Ship" asp-action="DeleteShip" asp-route-ShipId="@ship.ShipId"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Delete</button></a></th>
 
-            </tr>
+        </tr>
 
         }
     </tbody>
@@ -116,7 +117,7 @@
 
 
 
-<input type="button" onclick="Open()" value="Добавити корабль" id="myBtnF" />
+<input type="button" class="btn btn-secondary btn-sm" onclick="Open()" value="Добавити корабль" id="myBtnF" />
 <div id="myModal" class="modalF ">
     <!-- Modal content -->
     <div class="modal-contentF">

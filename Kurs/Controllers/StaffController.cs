@@ -109,6 +109,12 @@ namespace Kurs.Controllers
           ;
             return View();
         }
+        public IActionResult DeleteStaff(Guid PersonId)
+        {
+            var Staff = EFRepositoryStaff.FindById(PersonId);
+            EFRepositoryStaff.Remove(Staff);
+            return Redirect("/Staff/Staff");
+        }
 
         [HttpPost]
         public IActionResult AddStaff( StaffPerson staff )

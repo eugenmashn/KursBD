@@ -1,8 +1,8 @@
 ﻿
 @using Kurs.Models
 @using Newtonsoft;
-@model  Data.Models.Port
-@{ 
+@model Data.Models.Port
+@{
     ViewData["Title"] = "AllPort";
 }
 
@@ -19,6 +19,12 @@
     }
     object portUp;
 }
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+
 <style>
     .modal {
         display: none; /* Hidden by default */
@@ -63,8 +69,8 @@
 
     <div class="col">
         <label>Кількість причалів</label>
-        <input class="form-control"type="number" name="CountPrichal" />
-     
+        <input class="form-control" type="number" name="CountPrichal" />
+
         @*<input type="number" class="form-control" name="MinNumberWorkers">*@
     </div>
 
@@ -79,7 +85,7 @@
         <button type="submit" class=" btn btn-primary btn-block">Filter</button>
     </div>
 }
-<table class="table table-dark">
+<table class="table  table-striped">
     <thead>
     <th scope="col">Назва </th>
     <th scope="col">Кількість причалів</th>
@@ -90,67 +96,67 @@
         @foreach (var port in ViewBag.AllPort)
         {
 
-        <tr>
-            <th scope="row">@port.Name </th>
-            <th scope="row">@port.CountPrichal </th>
-            <th scope="row">@port.Depth </th>
-            <th scope="row"><a asp-area="" asp-controller="Port" asp-action="DeletePort" asp-route-portID="@port.PortId" ><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Delete</button></a></th>
-            <th scope="row"><a><input type="button" onclick="Open(this)" id="@port.PortId" value="Змінити" /> </a></th>
-        </tr>
+            <tr>
+                <th scope="row">@port.Name </th>
+                <th scope="row">@port.CountPrichal </th>
+                <th scope="row">@port.Depth </th>
+                <th scope="row"><a asp-area="" asp-controller="Port" asp-action="DeletePort" asp-route-portID="@port.PortId"><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Delete</button></a></th>
+                <th scope="row"><a><input type="button"  class="btn btn-secondary btn-sm" onclick="Open(this)" id="@port.PortId" value="Змінити" /> </a></th>
+            </tr>
 
         }
     </tbody>
 </table>
 
-<input type="button"onclick="Open()" value="Добавити порт" id="myBtnF" />
+<input type="button"  class="btn btn-secondary btn-sm" onclick="Open()" value="Добавити порт" id="myBtnF" />
 <div id="myModal" class="modal">
 
     <!-- Modal content -->
     <div class="modal-content">
         @using (Html.BeginForm("AddPort", "Port", FormMethod.Post))
         {
-        <div class="container">
-            <div class="row offset-11">
-                <span id="closeid" class="close">&times;</span>
-            </div>
-            <div class="row">
-                <label>Назва</label>
-                @Html.TextBoxFor(m => m.Name, new {@id="Name", @class = "form-control" })
-                @*//<input type="text" name="TeamName" placeholder="Team NAme" class="form-control" />*@
-            </div>
-            <div class="row">
-                <label>Площа</label>
-                @Html.TextBoxFor(m => m.Area, new { @id = "Area", @class = "form-control", @type = "number" })
-                @*<input type="number" class="form-control" name="MinNumberWorkers">*@
-            </div>
+            <div class="container">
+                <div class="row offset-11">
+                    <span id="closeid" class="close">&times;</span>
+                </div>
+                <div class="row">
+                    <label>Назва</label>
+                    @Html.TextBoxFor(m => m.Name, new { @id = "Name", @class = "form-control" })
+                    @*//<input type="text" name="TeamName" placeholder="Team NAme" class="form-control" />*@
+                </div>
+                <div class="row">
+                    <label>Площа</label>
+                    @Html.TextBoxFor(m => m.Area, new { @id = "Area", @class = "form-control", @type = "number" })
+                    @*<input type="number" class="form-control" name="MinNumberWorkers">*@
+                </div>
 
-            <div class="row ">
-                <label> Кількість причалів</label>
-                @Html.TextBoxFor(m => m.CountPrichal, new { @id = "CountPrich", @class = "form-control", @type = "number" })
+                <div class="row ">
+                    <label> Кількість причалів</label>
+                    @Html.TextBoxFor(m => m.CountPrichal, new { @id = "CountPrich", @class = "form-control", @type = "number" })
+                </div>
+                <div class="row ">
+                    <label> Глибина</label>
+                    @Html.TextBoxFor(m => m.Depth, new { @id = "Deptch", @class = "form-control", @type = "number" })
+                </div>
+                <div class="row ">
+                    <label> Тип порту</label>
+                    @Html.TextBoxFor(m => m.TypePort, new { @id = "TypePort", @class = "form-control" })
+                </div>
+                <div class="row ">
+                    <label>Місто</label>
+                    @Html.DropDownListFor(m => m.CityId, listItems, "-- Select Status --", new
+               {
+                   @id = "City",
+                   @class = "form-control"
+               })
+                </div>
+                <div>
+                    <input name="PortId" id="PortId" hidden />
+                </div>
+                <div style="margin:20px 0px ">
+                    <button type="submit" class=" btn btn-primary btn-block">Добавити</button>
+                </div>
             </div>
-            <div class="row ">
-                <label> Глибина</label>
-                @Html.TextBoxFor(m => m.Depth, new { @id = "Deptch", @class = "form-control", @type = "number" })
-            </div>
-            <div class="row ">
-                <label> Тип порту</label>
-                @Html.TextBoxFor(m => m.TypePort, new { @id = "TypePort", @class = "form-control" })
-            </div>
-            <div class="row ">
-                <label>Місто</label>
-                @Html.DropDownListFor(m => m.CityId, listItems, "-- Select Status --", new
-           {
-               @id = "City",
-               @class = "form-control"
-           })
-            </div>
-            <div>
-                <input name="PortId" id="PortId" hidden />
-            </div>
-            <div style="margin:20px 0px ">
-                <button type="submit" class=" btn btn-primary btn-block">Добавити</button>
-            </div>
-        </div>
         }
     </div>
 
@@ -177,23 +183,23 @@
             }
           }
     // When the user clicks the button, open the modal\
-   
+
     function Open(port) {
         console.log(port);
-        
+
         console.log(UpdateNePort);
         if (port != null) {
             modal.style.display = "block";
             var UpdateNePort = port.id;
             var portId = port.id;
 
-           
+
             var DataPort = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewData["AllPort"]));
             console.log(DataPort);
             var indexUp;
             $.each(DataPort, function (index, value) {
 
-                
+
                 if (value.PortId == UpdateNePort)
                 {
                     indexUp = value;
@@ -209,7 +215,7 @@
                 console.log('Индекс: ' + index + '; Значение: ' + value.PortId);
 
             });
-            var portUpdate = $(DataPort).find(i => i.PortId == UpdateNePort); 
+            var portUpdate = $(DataPort).find(i => i.PortId == UpdateNePort);
             console.log(portUpdate);
 
         }
