@@ -82,8 +82,6 @@
 <table class="table table-dark">
     <thead>
     <th scope="col">Назва </th>
-    <th scope="col">Тип порту </th>
-    <th scope="col">Площа</th>
     <th scope="col">Кількість причалів</th>
     <th scope="col">Глибина</th>
     </thead>
@@ -94,8 +92,6 @@
 
         <tr>
             <th scope="row">@port.Name </th>
-            <th scope="row">@port.TypePort </th>
-            <th scope="row">@port.Area </th>
             <th scope="row">@port.CountPrichal </th>
             <th scope="row">@port.Depth </th>
             <th scope="row"><a asp-area="" asp-controller="Port" asp-action="DeletePort" asp-route-portID="@port.PortId" ><button type="button" class="btn btn-secondary btn-sm" style="margin:0,20px; ">Delete</button></a></th>

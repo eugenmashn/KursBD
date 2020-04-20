@@ -64,13 +64,43 @@ namespace Kurs.Controllers
             ViewBag.ListCupt = ListData;
             return View();
         }
-        public IActionResult Staff()
+        [HttpGet]
+        [HttpPost]
+        public IActionResult Person( Person person)
         {
+            ViewBag.City = EFRepositoryCity.Get();
+
+            var Data = EFRepositoryStaff.IncludeGet(i => i.City).ToList();
+            if (person.Position != null)
+            {
+                Data = Data.Where(i => i.Position == person.Position).ToList();
+            }
+            if (person.CityId != Guid.Empty)
+            {
+                Data = Data.Where(i => i.CityId == person.CityId).ToList();
+            }
+            ViewBag.Data = Data;
+            return View();
+        }
+        [HttpGet]
+        [HttpPost]
+        public IActionResult Staff( SortPerson sortPerson)
+        {  
+           
+
+            var Data = EFRepositoryStaff.IncludeGet(i => i.Ship).ToList(); 
+            Data = EFRepositoryStaff.IncludeGet(i => i.City).ToList();
+            if (sortPerson.Birsday != default(DateTime))
+            {
+                Data = Data.Where(i => i.BirstDay == sortPerson.Birsday).ToList();
+            }
+            if(sortPerson.Sell != 0)
+            {
+                Data = Data.Where(i => i.Salary <= sortPerson.Sell).ToList();
+            }
             ViewBag.Ship = EFRepositoryShip.Get();
             ViewBag.City = EFRepositoryCity.Get();
-            ViewBag.Staff = EFRepositoryStaff.IncludeGet(i => i.City).ToList();
-
-            ViewBag.Staff = EFRepositoryStaff.IncludeGet( i => i.Ship).ToList();
+            ViewBag.Staff = Data; 
             return View();
         }
         public IActionResult AddStaff()

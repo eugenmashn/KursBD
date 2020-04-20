@@ -60,6 +60,48 @@ namespace Kurs.Controllers
 
         [HttpGet]
         [HttpPost]
+        public IActionResult Prichal( SortPrichal sortPrichal)
+        {
+            var visits = EFRepositoryVisits.IncludeGet(i => i.Port).ToList();
+            var Visits = EFRepositoryVisits.IncludeGet(i => i.Ship).ToList();
+            ViewBag.Visits = Visits;
+            ViewBag.Port = EFRepositoryPort.Get().ToList();
+            ViewBag.Ship = EFRepositoryShip.Get().ToList();
+            var Data = new List<Prichal>();
+            foreach(var i in Visits)
+            {
+                Data.Add(new Models.Prichal
+                {
+                    NamePort = i.Port.Name,
+                    NameShip = i.Ship.Name,
+                    NumberPrich = i.NumberPrich,
+                    Date = i.DateArrival,
+                    WaterTon = i.Ship.CountWater,
+                    DateOf = i.DateDeparture
+                });
+            }
+            if(sortPrichal.Data != default(DateTime))
+            {
+
+                Data = Data.Where(i => i.Date <= sortPrichal.Data && i.DateOf >= sortPrichal.Data).ToList();
+                foreach (var i in Data)
+                {
+                    i.Date = sortPrichal.Data;
+                }
+
+            }
+
+            if (sortPrichal.ShipWater != 0)
+            {
+
+               Data = Data.Where(i => i.WaterTon == sortPrichal.ShipWater).ToList();
+            }
+            ViewBag.Data = Data;
+            return View();
+        }
+
+        [HttpGet]
+        [HttpPost]
         public IActionResult Visits()
 
         {
@@ -123,6 +165,7 @@ namespace Kurs.Controllers
                 newShip.Witch = ship.Witch;
                 newShip.TypeShip = ship.TypeShip;
                 newShip.CountStaff = ship.CountStaff;
+                newShip.CountWater = ship.CountWater;
                 EFRepositoryShip.Update(newShip);
             }
             else

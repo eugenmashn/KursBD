@@ -31,11 +31,13 @@ namespace Kurs.Controllers
         {
             return View();
         }
-
-        public IActionResult CityAndCountry()
+        [HttpGet]
+        [HttpPost]
+        public IActionResult CityAndCountry(CityAndCountry cityAndCountry)
         {
             var Data = EFRepositoryPort.IncludeGet(i => i.City).ToList();
             var Country = EFRepositoryCountries.Get();
+            ViewBag.Countries = EFRepositoryCountries.Get();
             var DataCountry = new List<ViewCount>();
             foreach (var i in Data)
             {
@@ -49,18 +51,26 @@ namespace Kurs.Controllers
                 }
                 else
                 {
-                    
+
                     DataType = new ViewCount()
                     {
                         Name = CountryName,
                         Coun = 1,
                         typeOfPort = i.TypePort,
-                        CountId =Guid.NewGuid()
+                        CountId = Guid.NewGuid(),
+                        ContryId = i.City.CountryId
                     };
                     DataCountry.Add(DataType);
                 }
             }
-
+            if (cityAndCountry.CountryId != Guid.Empty)
+            {
+                DataCountry = DataCountry.Where(i => i.ContryId == cityAndCountry.CountryId).ToList();
+            }
+            if (cityAndCountry.TypeOfPort != null)
+            {
+                DataCountry = DataCountry.Where(i => i.typeOfPort == cityAndCountry.TypeOfPort).ToList();
+            }
             return View(DataCountry);
         }
         [HttpGet]

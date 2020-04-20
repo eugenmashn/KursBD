@@ -70,6 +70,23 @@
             cursor: pointer;
         }
 </style>
+@using (Html.BeginForm("Staff", "Staff", FormMethod.Post))
+{
+    <div class="col">
+        <label> День народження </label>
+        <input name="Birsday" type="text" placeholder="Дата" class="datepicker" />
+    </div>
+
+    <div class="col ">
+        <label> Заробітня плата </label>
+        <input name="Sell" type="number"  class="number" />
+    </div>
+
+
+    <div style="margin:20px 0px ">
+        <button type="submit" class=" btn btn-primary btn-block">Filter</button>
+    </div>
+}
 
 <table class="table table-dark">
     <thead>
@@ -77,13 +94,7 @@
     <th scope="col"> Прізвища </th>
 
     <th scope="col">День народження</th>
-    <th scope="col">Стать</th>
-    <th scope="col"> Місто проживання</th>
-    <th scope="col"> Номер телефону</th>
-    <th scope="col"> Стаж праці </th>
     <th scope="col"> Заробітня плата </th>
-    <th scope="col"> Посада </th>
-    <th scope="col"> Назва корабля </th>
     </thead>
     <tbody>
 
@@ -94,13 +105,8 @@
                 <th scope="row">@staff.FirstName </th>
                 <th scope="row">@staff.LastName </th>
                 <th scope="row">@staff.BirstDay </th>
-                <th scope="row">@staff.stat </th>
-                <th scope="row">@staff.City.Name </th>
-                <th scope="row">@staff.Phone </th>
-                <th scope="row">@staff.Experience </th>
+
                 <th scope="row">@staff.Salary </th>
-                <th scope="row">@staff.Position </th>
-                <th scope="row">@staff.Ship.Name </th>
                 <th scope="row"><a><input type="button" onclick="Open(this)" id="@staff.PersonId" value="Змінити" /> </a></th>
 
             </tr>
@@ -115,77 +121,77 @@
     <div class="modal-contentF">
         @using (Html.BeginForm("AddStaff", "Staff", FormMethod.Post))
         {
-        <div class="container">
-            <div class="row offset-11">
-                <span id="closeid" style="margin-left: 107%;" onclick="close()" class="close">&times;</span>
-            </div>
-            <div class="col">
-                <label>Ім'я</label>
-                @Html.TextBoxFor(m => m.FirstName, new { @id = "FirstName", @class = "form-control" })
-                @*//<input type="text" name="TeamName" placeholder="Team NAme" class="form-control" />*@
-            </div>
-            <div class="col">
-                <label>Прізвища</label>
-                @Html.TextBoxFor(m => m.LastName, new { @id = "LastName", @class = "form-control" })
-                @*<input type="number" class="form-control" name="MinNumberWorkers">*@
-            </div>
+            <div class="container">
+                <div class="row offset-11">
+                    <span id="closeid" style="margin-left: 107%;" onclick="close()" class="close">&times;</span>
+                </div>
+                <div class="col">
+                    <label>Ім'я</label>
+                    @Html.TextBoxFor(m => m.FirstName, new { @id = "FirstName", @class = "form-control" })
+                    @*//<input type="text" name="TeamName" placeholder="Team NAme" class="form-control" />*@
+                </div>
+                <div class="col">
+                    <label>Прізвища</label>
+                    @Html.TextBoxFor(m => m.LastName, new { @id = "LastName", @class = "form-control" })
+                    @*<input type="number" class="form-control" name="MinNumberWorkers">*@
+                </div>
 
-            <div class="col ">
-                <label> Телефон </label>
-                @Html.TextBoxFor(m => m.Phone, new { @id = "Phone", @class = "form-control" })
-            </div>
-            <div class="col ">
-                <label> Стаж </label>
-                @Html.TextBoxFor(m => m.Experience, new { @id = "Experience", @class = "form-control", @type="number"})
-            </div>
-            <div class="col ">
-                <label> Стать </label>
-                @Html.TextBoxFor(m => m.stat, new { @id = "Phone", @class = "form-control" })
-            </div>
-            <div class="col ">
-                <label> Професія </label>
-                @Html.TextBoxFor(m => m.Position, new { @id = "Position", @class = "form-control" })
-            </div>
-            <div class="col">
-                <label> Дата прибуття </label>
-                <input name="Arrived" class="datepicker" type="text" id="Arrived" placeholder="Дата прибуття" />
+                <div class="col ">
+                    <label> Телефон </label>
+                    @Html.TextBoxFor(m => m.Phone, new { @id = "Phone", @class = "form-control" })
+                </div>
+                <div class="col ">
+                    <label> Стаж </label>
+                    @Html.TextBoxFor(m => m.Experience, new { @id = "Experience", @class = "form-control", @type = "number" })
+                </div>
+                <div class="col ">
+                    <label> Стать </label>
+                    @Html.TextBoxFor(m => m.stat, new { @id = "Phone", @class = "form-control" })
+                </div>
+                <div class="col ">
+                    <label> Професія </label>
+                    @Html.TextBoxFor(m => m.Position, new { @id = "Position", @class = "form-control" })
+                </div>
+                <div class="col">
+                    <label> Дата прибуття </label>
+                    <input name="Arrived" class="datepicker" type="text" id="Arrived" placeholder="Дата прибуття" />
 
-                @*//<input type="text" name="TeamName" placeholder="Team NAme" class="form-control" />*@
-            </div>
-            <div class="col">
-                <label> Дата прибуття </label>
-                <input name="BirstDay" class="datepicker" type="text" id="BirstDay" placeholder="Дата прибуття" />
+                    @*//<input type="text" name="TeamName" placeholder="Team NAme" class="form-control" />*@
+                </div>
+                <div class="col">
+                    <label> Дата прибуття </label>
+                    <input name="BirstDay" class="datepicker" type="text" id="BirstDay" placeholder="Дата прибуття" />
 
-                @*//<input type="text" name="TeamName" placeholder="Team NAme" class="form-control" />*@
-            </div>
+                    @*//<input type="text" name="TeamName" placeholder="Team NAme" class="form-control" />*@
+                </div>
 
-            <div class="col ">
-                <label> Заробітня плата </label>
-                @Html.TextBoxFor(m => m.Salary, new { @id = "Salary", @class = "form-control", @type = "number" })
-            </div>
-            <div class="col ">
-                <label>Корабель де працює робітни</label>
-                @Html.DropDownListFor(m => m.ShipId, listItems, "-- Select Status --", new
+                <div class="col ">
+                    <label> Заробітня плата </label>
+                    @Html.TextBoxFor(m => m.Salary, new { @id = "Salary", @class = "form-control", @type = "number" })
+                </div>
+                <div class="col ">
+                    <label>Корабель де працює робітни</label>
+                    @Html.DropDownListFor(m => m.ShipId, listItems, "-- Select Status --", new
+                       {
+                           @id = "ShipId",
+                           @class = "form-control"
+                       })
+                </div>
+                <div class="col ">
+                    <label> Місто де живе працівник робітник </label>
+                    @Html.DropDownListFor(m => m.CityId, listItemsC, "-- Select Status --", new
                    {
-                       @id = "ShipId",
+                       @id = "CityId",
                        @class = "form-control"
                    })
+                </div>
+                <div>
+                    <input name="PersonId" id="PersonId" hidden />
+                </div>
+                <div style="margin:20px 0px ">
+                    <button type="submit" class=" btn btn-primary btn-block">Добавити</button>
+                </div>
             </div>
-            <div class="col ">
-                <label> Місто де живе працівник робітник </label>
-                @Html.DropDownListFor(m => m.CityId, listItemsC, "-- Select Status --", new
-               {
-                   @id = "CityId",
-                   @class = "form-control"
-               })
-            </div>
-            <div>
-                <input name="PersonId" id="PersonId" hidden />
-            </div>
-            <div style="margin:20px 0px ">
-                <button type="submit" class=" btn btn-primary btn-block">Добавити</button>
-            </div>
-        </div>
         }
     </div>
     <script>
@@ -246,7 +252,7 @@
         }
         else {
 
-        
+
             $("#FirstName").val(null);
             $("#LastName").val(null);
             $("#Phone").val(null);

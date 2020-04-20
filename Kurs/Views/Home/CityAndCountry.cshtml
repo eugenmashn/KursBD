@@ -1,10 +1,51 @@
 ﻿@model IEnumerable<Kurs.Models.ViewCount>
+
 @{
     ViewData["Title"] = "City&&Country";
 }
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+
+@{
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    foreach (var Country in ViewBag.Countries)
+    {
+        listItems.Add(new SelectListItem
+        {
+            Text = Country.Name,
+            Value = Country.CountryId.ToString()
+        }
+        );
+    }
+}
+@using (Html.BeginForm("CityAndCountry", "Home", FormMethod.Post))
+{
+    <div class="col">
+        <label>Порт</label>
+        @Html.DropDownList("CountryId", listItems, "-- Select Status --", new
+   {
+       @id = "CountryId",
+       @class = "form-control"
+   })
 
 
+    </div>
+
+    <div class="col ">
+
+        <input name="TypeOfPort" type="text" placeholder="Дата" />
+    </div>
+
+
+    <div style="margin:20px 0px ">
+        <button type="submit" class=" btn btn-primary btn-block">Filter</button>
+    </div>
+}
 <table class="table table-dark">
     <thead>
     <th scope="col">Назва Країни </th>

@@ -18,5 +18,6 @@ namespace Data.Models
         public Port Port { get; set; }
         public string color { get; set; }
         public int CountStaff { get; set; }
+        public int CountWater { get; set; }
     }
 }

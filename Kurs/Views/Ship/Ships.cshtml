@@ -27,7 +27,7 @@
     <div class="col">
         <label>Менше Ширини</label>
 
-        <input name="Witch" type="number" placeholder="Дата" class="number" />
+        <input name="Witch" type="number"  class="number" />
 
         @*<input type="number" class="form-control" name="MinNumberWorkers">*@
     </div>
@@ -35,7 +35,7 @@
 
     <div class="col ">
         <label> Менше довжини</label>
-        <input name="Lenght" type="number" placeholder="Дата" class="number" />
+        <input name="Lenght" type="number"  class="number" />
 
     </div>
     <div class="col ">
@@ -144,6 +144,10 @@
                 <div class="col ">
                     <label> Кількість екіпажу </label>
                     @Html.TextBoxFor(m => m.CountStaff, new { @id = "CountStaff", @class = "form-control", @type = "number" })
+                </div>  
+                <div class="col ">
+                    <label> Водотонажність </label>
+                    @Html.TextBoxFor(m => m.CountWater, new { @id = "CountWater", @class = "form-control", @type = "number" })
                 </div>
                 <div class="col ">
                     <label> Тип корабля</label>
@@ -215,6 +219,7 @@
                     $("#TypeShip").val(value.TypeShip);
                     $("#color").val(value.color);
                     $("#CountStaff").val(value.CountStaff);
+                    $("#CountWater").val(value.CountWater);
                     $("#PortId").val(value.PortId);
                     $("#ShipId").val(value.ShipId);
                 }
@@ -232,6 +237,7 @@
             $("#color").val(null);
             $("#PortId").val(null);
             $("#CountStaff").val(null);
+            $("#CountWater").val(null);
             $("#ShipId").val(null);
             debugger;
             modal.style.display = "block";
